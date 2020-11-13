@@ -22,6 +22,7 @@ namespace group_proj.Main
         public wndMain()
         {
             InitializeComponent();
+            //test
         }
     }
 }
