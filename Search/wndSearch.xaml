@@ -5,11 +5,31 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:group_proj.Search"
         mc:Ignorable="d"
-        Title="wndSearch" Height="450" Width="800">
+        Title="wndSearch" Height="450" Width="629.863">
     <Grid>
-        <StackPanel HorizontalAlignment="Left" Height="374" Margin="424,10,0,0" VerticalAlignment="Top" Width="358">
+        <StackPanel HorizontalAlignment="Left" Height="399" Margin="254,0,0,0" VerticalAlignment="Top" Width="358">
             <Label x:Name="lblResult" Content="Results: "/>
-            <DataGrid x:Name="dgResults" Height="340"/>
+            <DataGrid x:Name="dgResults" Height="321"/>
+            <StackPanel Orientation="Horizontal">
+                <Button x:Name="btnDeleteSelection" Content="Delete Invoice" />
+                <Button x:Name="btnEditInvoice" Content="Edit Invoice" />
+            </StackPanel>
+        </StackPanel>
+        <StackPanel HorizontalAlignment="Left" Margin="25,107,0,0" VerticalAlignment="Top" Width="181" Grid.ColumnSpan="3" Grid.RowSpan="2">
+            <Label x:Name="lblFilter" Content="Filter"/>
+            <StackPanel Orientation="Horizontal">
+                <Label x:Name="lblInvoiceNumber" Content="Invoice Number:"/>
+                <ComboBox x:Name="cbInvoiceNumber" Width="83"/>
+            </StackPanel>
+            <StackPanel  Orientation="Horizontal">
+                <Label x:Name="lblInvoiceDate" Content="Invoice Date:"/>
+                <DatePicker/>
+            </StackPanel>
+            <StackPanel  Orientation="Horizontal">
+                <Label x:Name="lblTotalCharge" Content="Total Charge:"/>
+                <ComboBox x:Name="cbTotalCharge" Width="102"/>
+            </StackPanel>
+            <Button x:Name="btnEClearFilter" Content="Clear Filter" Height="40" Margin="47,5,44,0"/>
         </StackPanel>
     </Grid>
 </Window>
