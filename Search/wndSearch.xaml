@@ -7,6 +7,9 @@
         mc:Ignorable="d"
         Title="wndSearch" Height="450" Width="800">
     <Grid>
-        
+        <StackPanel HorizontalAlignment="Left" Height="374" Margin="424,10,0,0" VerticalAlignment="Top" Width="358">
+            <Label x:Name="lblResult" Content="Results: "/>
+            <DataGrid x:Name="dgResults" Height="340"/>
+        </StackPanel>
     </Grid>
 </Window>
