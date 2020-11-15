@@ -31,7 +31,7 @@ namespace group_proj.Search
         /// <summary>
         /// Constructor constructing things
         /// </summary>
-        public wndSearch(ref wndMain main)
+        public wndSearch(wndMain main)
         {
             try
             {

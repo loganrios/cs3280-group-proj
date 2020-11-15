@@ -25,7 +25,7 @@ namespace group_proj.Main
 
         private void btnSearchForInvoice_Click(object sender, RoutedEventArgs e)
         {
-            wndSearch s = new wndSearch();
+            wndSearch s = new wndSearch(this);
             _ = s.ShowDialog();
         }
 
