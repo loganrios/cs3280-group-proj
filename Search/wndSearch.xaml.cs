@@ -28,7 +28,8 @@ namespace group_proj.Search
         clsSearchLogic classSearchLogic;
 
         /// <summary>
-        /// Invoice to edit
+        /// Global variable that is able to be pulled by other classes. 
+        /// This is how the user selected invoice is sent to main to be edited. 
         /// </summary>
         public clsInvoice invoiceToEdit { get; set; }
 
