@@ -21,6 +21,12 @@ namespace group_proj.Main
 
         public void ReturnFromSearch(clsInvoice invoice)
         {
+            Refresh();
+            return;
+        }
+
+        private void Refresh()
+        {
             return;
         }
 
@@ -29,12 +35,14 @@ namespace group_proj.Main
             clsInvoice inv = this.inv;
             wndSearch s = new wndSearch(ref inv);
             _ = s.ShowDialog();
+            ReturnFromSearch(inv);
         }
 
         private void btnEditAvailableItems_Click(object sender, RoutedEventArgs e)
         {
             wndItems i = new wndItems();
             _ = i.ShowDialog();
+            Refresh();
         }
     }
 } 

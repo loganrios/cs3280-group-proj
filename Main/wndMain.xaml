@@ -6,31 +6,33 @@
         xmlns:local="clr-namespace:group_proj.Main"
         xmlns:group_proj="clr-namespace:group_proj" x:Class="group_proj.Main.wndMain"
         mc:Ignorable="d"
-        Title="wndMain" Height="450" Width="800">
+        Title="wndMain" Height="450" Width="665.752">
     <StackPanel Orientation="Vertical">
-        <GroupBox Header="Menu">
+        <GroupBox Header="Menu" Padding="5" Margin="5">
             <StackPanel Orientation="Horizontal">
-                <Button Content="New Invoice" />
-                <Button x:Name="btnSearchForInvoice" Content="Search for Invoice" Click="btnSearchForInvoice_Click" />
-                <Button x:Name="btnEditAvailableItems" Content="Edit Available Items" Click="btnEditAvailableItems_Click" />
+                <Button Content="New Invoice" Margin="5" Padding="5"/>
+                <Button x:Name="btnSearchForInvoice" Content="Search for Invoice" Click="btnSearchForInvoice_Click" Margin="5" Padding="5" />
+                <Button x:Name="btnEditAvailableItems" Content="Edit Available Items" Click="btnEditAvailableItems_Click" Margin="5" Padding="5"/>
             </StackPanel>
         </GroupBox>
-        <GroupBox Header="Active Invoice">
+        <GroupBox Header="Active Invoice" Padding="5" Margin="5">
             <StackPanel Orientation="Vertical">
                 <StackPanel Orientation="Horizontal">
-                    <Label Content="Invoice Number: " />
-                    <TextBox Width="120" />
+                    <Label Content="Invoice Number: " Padding="5" Margin="5"/>
+                    <TextBox Width="120" Margin="5"/>
+                    <Label Content="Invoice Date: " Padding="5" Margin="5"/>
+                    <TextBox Width="120" Margin="5"/>
                 </StackPanel>
-                <StackPanel Orientation="Horizontal">
-                    <Label Content="Invoice Date: " />
-                    <TextBox Width="120" />
-                </StackPanel>
-                <DataGrid>
+                <DataGrid Height="150">
                     <!-- Here goes the Invoice + LineItems join -->
                 </DataGrid>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                    <Label Content="Total Cost: " Padding="5" Margin="5"/>
+                    <TextBox Width="75" Margin="5" />
+                </StackPanel>
                 <StackPanel Orientation="Horizontal">
-                    <Button Content="Save Changes" />
-                    <Button Content="Delete Invoice" />
+                    <Button Content="Save Changes" Margin="5" Padding="5"/>
+                    <Button Content="Delete Invoice" Margin="5" Padding="5"/>
                 </StackPanel>
             </StackPanel>
         </GroupBox>

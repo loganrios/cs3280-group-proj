@@ -35,7 +35,7 @@ namespace group_proj.Main
         {
             return
                 "INSERT INTO Invoices(InvoiceDate, TotalCost) " +
-                "Values('#4/13/2018#', 100)";
+                "Values('#" + StringifyDate(InvoiceDate) + "#', " + TotalCost.ToString() + ");";
         }
 
         public string SelectInvoiceData(int InvoiceID)
@@ -44,6 +44,26 @@ namespace group_proj.Main
                 "SELECT InvoiceNum, InvoiceDate, TotalCost" +
                 "FROM Invoices" +
                 "WHERE InvoiceNum = " + InvoiceID.ToString() + "; ";
+        }
+
+        public string GetAllItems()
+        {
+            return
+                "select ItemCode, ItemDesc, Cost from ItemDesc;";
+        }
+
+        public string GetLineItemsInInvoice(int InvoiceID)
+        {
+            return
+                "SELECT LineItems.ItemCode, ItemDesc.ItemDesc, ItemDesc.Cost " +
+                "FROM LineItems, ItemDesc " +
+                "WHERE LineItems.ItemCode = ItemDesc.ItemCode " +
+                "AND LineItems.InvoiceNum = " + InvoiceID.ToString() + ";";
+        }
+
+        public string StringifyDate(DateTime dt)
+        {
+            return dt.Month.ToString() + "/" + dt.Day.ToString() + "/" + dt.Year.ToString();
         }
     }
 }
