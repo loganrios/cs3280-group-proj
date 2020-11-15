@@ -1,16 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
+﻿using System.Windows;
+using group_proj.Search;
+using group_proj.Items;
 
 namespace group_proj.Main
 {
@@ -19,10 +9,27 @@ namespace group_proj.Main
     /// </summary>
     public partial class wndMain : Window
     {
+        private clsDataAccess db;
+        private clsMainLogic ml;
+
         public wndMain()
         {
             InitializeComponent();
-            //test
+            db = new clsDataAccess();
+        }
+
+        private void btnSearchForInvoice_Click(object sender, RoutedEventArgs e)
+        {
+            wndSearch s = new wndSearch();
+            this.Close();
+            _ = s.ShowDialog();
+        }
+
+        private void btnEditAvailableItems_Click(object sender, RoutedEventArgs e)
+        {
+            wndItems i = new wndItems();
+            this.Close();
+            _ = i.ShowDialog();
         }
     }
-}
+} 

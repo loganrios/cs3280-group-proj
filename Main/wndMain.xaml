@@ -1,12 +1,38 @@
-﻿<Window x:Class="group_proj.Main.wndMain"
+﻿<Window
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:group_proj.Main"
+        xmlns:group_proj="clr-namespace:group_proj" x:Class="group_proj.Main.wndMain"
         mc:Ignorable="d"
         Title="wndMain" Height="450" Width="800">
     <StackPanel Orientation="Vertical">
-        <Label Content="Hello Main!" />
+        <GroupBox Header="Menu">
+            <StackPanel Orientation="Horizontal">
+                <Button Content="New Invoice" />
+                <Button x:Name="btnSearchForInvoice" Content="Search for Invoice" Click="btnSearchForInvoice_Click" />
+                <Button x:Name="btnEditAvailableItems" Content="Edit Available Items" Click="btnEditAvailableItems_Click" />
+            </StackPanel>
+        </GroupBox>
+        <GroupBox Header="Active Invoice">
+            <StackPanel Orientation="Vertical">
+                <StackPanel Orientation="Horizontal">
+                    <Label Content="Invoice Number: " />
+                    <TextBox Width="120" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <Label Content="Invoice Date: " />
+                    <TextBox Width="120" />
+                </StackPanel>
+                <DataGrid>
+                    <!-- Here goes the Invoice + LineItems join -->
+                </DataGrid>
+                <StackPanel Orientation="Horizontal">
+                    <Button Content="Save Changes" />
+                    <Button Content="Delete Invoice" />
+                </StackPanel>
+            </StackPanel>
+        </GroupBox>
     </StackPanel>
 </Window>
