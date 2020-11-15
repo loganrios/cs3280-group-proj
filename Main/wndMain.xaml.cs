@@ -33,8 +33,9 @@ namespace group_proj.Main
         private void btnSearchForInvoice_Click(object sender, RoutedEventArgs e)
         {
             clsInvoice inv = this.inv;
-            wndSearch s = new wndSearch(ref inv);
+            wndSearch s = new wndSearch(inv);
             _ = s.ShowDialog();
+            inv = s.invoiceToEdit;
             ReturnFromSearch(inv);
         }
 
