@@ -9,6 +9,7 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
+using System.Windows.Markup;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
@@ -26,12 +27,16 @@ namespace group_proj.Search
         /// </summary>
         clsSearchLogic classSearchLogic;
 
-        wndMain main;
+        /// <summary>
+        /// Invoice to edit
+        /// </summary>
+        public clsInvoice invoiceToEdit { get; set; }
+
 
         /// <summary>
         /// Constructor constructing things
         /// </summary>
-        public wndSearch(ref clsInvoice inv)
+        public wndSearch(clsInvoice invoice)
         {
             try
             {
@@ -40,6 +45,7 @@ namespace group_proj.Search
                 Application.Current.ShutdownMode = ShutdownMode.OnMainWindowClose;
 
                 classSearchLogic = new clsSearchLogic();
+
             }
             catch (Exception ex)
             {
@@ -94,12 +100,18 @@ namespace group_proj.Search
         {
             try
             {
-                if ((clsInvoice)dgResults.SelectedItem != null)
-                {
-                    main.ReturnFromSearch((clsInvoice)dgResults.SelectedItem);
-                   
+
+                //if ((clsInvoice)dgResults.SelectedItem != null)
+                //{
+                    //Test Invoice
+                    //invoiceToEdit = (clsInvoice)dgResults.SelectedItem;
+
+                    clsInvoice testinvoice = new clsInvoice(44, new DateTime(), 44);
+
+                    invoiceToEdit = testinvoice;
+
                     this.Close();
-                }
+                //}
             }
             catch (Exception ex)
             {
