@@ -18,17 +18,20 @@ namespace group_proj.Main
             db = new clsDataAccess();
         }
 
+        public void ReturnFromSearch(clsInvoice invoice)
+        {
+            return;
+        }
+
         private void btnSearchForInvoice_Click(object sender, RoutedEventArgs e)
         {
             wndSearch s = new wndSearch();
-            this.Close();
             _ = s.ShowDialog();
         }
 
         private void btnEditAvailableItems_Click(object sender, RoutedEventArgs e)
         {
             wndItems i = new wndItems();
-            this.Close();
             _ = i.ShowDialog();
         }
     }
