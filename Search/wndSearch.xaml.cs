@@ -26,10 +26,12 @@ namespace group_proj.Search
         /// </summary>
         clsSearchLogic classSearchLogic;
 
+        wndMain main;
+
         /// <summary>
         /// Constructor constructing things
         /// </summary>
-        public wndSearch()
+        public wndSearch(ref wndMain main)
         {
             try
             {
@@ -38,6 +40,9 @@ namespace group_proj.Search
                 Application.Current.ShutdownMode = ShutdownMode.OnMainWindowClose;
 
                 classSearchLogic = new clsSearchLogic();
+
+                this.main = main;
+                
             }
             catch (Exception ex)
             {
@@ -94,9 +99,8 @@ namespace group_proj.Search
             {
                 if ((clsInvoice)dgResults.SelectedItem != null)
                 {
-                    this.Hide();
-                    //wndMain openMainWidnow = new wndMain(classSearchLogic.invoiceToSendToEdit((clsInvoice)dgResults.SelectedItem));
-                    //openMainWidnow.ShowDialog();
+                    main.ReturnFromSearch((clsInvoice)dgResults.SelectedItem);
+                   
                     this.Close();
                 }
             }
