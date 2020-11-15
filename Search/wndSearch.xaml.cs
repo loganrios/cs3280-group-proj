@@ -31,7 +31,7 @@ namespace group_proj.Search
         /// <summary>
         /// Constructor constructing things
         /// </summary>
-        public wndSearch(ref wndMain main)
+        public wndSearch(ref clsInvoice inv)
         {
             try
             {
@@ -40,9 +40,6 @@ namespace group_proj.Search
                 Application.Current.ShutdownMode = ShutdownMode.OnMainWindowClose;
 
                 classSearchLogic = new clsSearchLogic();
-
-                this.main = main;
-                
             }
             catch (Exception ex)
             {
