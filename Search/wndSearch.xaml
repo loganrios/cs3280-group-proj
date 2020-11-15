@@ -5,17 +5,17 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:group_proj.Search"
         mc:Ignorable="d"
-        Title="wndSearch" Height="450" Width="629.863">
+        Title="Search" Height="450" Width="629.863">
     <Grid>
         <StackPanel HorizontalAlignment="Left" Height="399" Margin="254,0,0,0" VerticalAlignment="Top" Width="358">
             <Label x:Name="lblResult" Content="Results: "/>
-            <DataGrid x:Name="dgResults" Height="321"/>
+            <DataGrid x:Name="dgResults" Height="321"  Margin="0,5,0,10" AutoGenerateColumns="False" MaxColumnWidth="20"/>
             <StackPanel Orientation="Horizontal">
-                <Button x:Name="btnDeleteSelection" Content="Delete Invoice" />
-                <Button x:Name="btnEditInvoice" Content="Edit Invoice" />
+                <Button x:Name="btnDeleteSelection" Content="Delete Invoice" Click="btnDeleteSelection_Click" />
+                <Button x:Name="btnEditInvoice" Content="Edit Invoice" Click="btnEditInvoice_Click" />
             </StackPanel>
         </StackPanel>
-        <StackPanel HorizontalAlignment="Left" Margin="25,107,0,0" VerticalAlignment="Top" Width="181" Grid.ColumnSpan="3" Grid.RowSpan="2">
+        <StackPanel HorizontalAlignment="Left" Margin="10,36,0,0" VerticalAlignment="Top" Width="181">
             <Label x:Name="lblFilter" Content="Filter"/>
             <StackPanel Orientation="Horizontal">
                 <Label x:Name="lblInvoiceNumber" Content="Invoice Number:"/>
