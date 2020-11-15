@@ -11,6 +11,7 @@ namespace group_proj.Main
     {
         private clsDataAccess db;
         private clsMainLogic ml;
+        private clsInvoice inv;
 
         public wndMain()
         {
@@ -25,7 +26,8 @@ namespace group_proj.Main
 
         private void btnSearchForInvoice_Click(object sender, RoutedEventArgs e)
         {
-            wndSearch s = new wndSearch(this);
+            clsInvoice inv = this.inv;
+            wndSearch s = new wndSearch(ref inv);
             _ = s.ShowDialog();
         }
 
