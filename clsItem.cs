@@ -8,8 +8,8 @@ namespace group_proj
 {
     class clsItem
     {
-        string ItemCode;
-        string ItemDesc;
-        double Cost;
+        public string ItemCode;
+        public string ItemDesc;
+        public double Cost;
     }
 }

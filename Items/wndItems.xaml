@@ -6,7 +6,61 @@
         xmlns:local="clr-namespace:group_proj.Items"
         mc:Ignorable="d"
         Title="wndItems" Height="450" Width="800">
-    <Grid>
-        
+    <Grid >
+        <Grid.Background>
+            <LinearGradientBrush EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
+                <GradientStop Color="White"/>
+                <GradientStop Color="#FF434F85" Offset="1"/>
+            </LinearGradientBrush>
+        </Grid.Background>
+        <Button Content="Update" HorizontalAlignment="Left" Margin="377,223,0,0" VerticalAlignment="Top" Width="82" Height="22" Cursor="Hand" BorderThickness="0" FontSize="16" FontWeight="Bold" Click="updateItem_Click">
+            <Button.Background>
+                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                    <GradientStop Color="#FF7CB9F1" Offset="0"/>
+                    <GradientStop Color="#FFF0F0F0" Offset="1"/>
+                </LinearGradientBrush>
+            </Button.Background>
+        </Button>
+        <Button Content="Delete" HorizontalAlignment="Left" Margin="377,335,0,0" VerticalAlignment="Top" Width="82" Height="22" Cursor="Hand" BorderThickness="0" FontSize="16" FontWeight="Bold" Click="deleteItem_Click">
+            <Button.Background>
+                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                    <GradientStop Color="#FF7CB9F1" Offset="0"/>
+                    <GradientStop Color="White" Offset="1"/>
+                </LinearGradientBrush>
+            </Button.Background>
+        </Button>
+        <Button Content="+ ITEM" HorizontalAlignment="Left" Margin="377,112,0,0" VerticalAlignment="Top" Width="82" Height="22" Cursor="Hand" BorderThickness="0" FontSize="16" FontWeight="Bold" Click="addItem_Click">
+            <Button.Background>
+                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                    <GradientStop Color="#FF7CB9F1" Offset="0"/>
+                    <GradientStop Color="#FFF0F0F0" Offset="1"/>
+                </LinearGradientBrush>
+            </Button.Background>
+        </Button>
+        <Button Content="Main Menu" HorizontalAlignment="Left" Margin="10,4,0,0" VerticalAlignment="Top" Width="82" Height="22" Cursor="Hand" BorderThickness="0" FontSize="14" FontWeight="Bold" Click="MainWindow_Click">
+            <Button.Background>
+                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                    <GradientStop Color="#FF7CB9F1" Offset="0"/>
+                    <GradientStop Color="#FFF0F0F0" Offset="1"/>
+                </LinearGradientBrush>
+            </Button.Background>
+        </Button>
+        <TextBox x:Name="addItem" HorizontalAlignment="Left" Height="23" Margin="98,112,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="139" FontSize="14"/>
+        <TextBox x:Name="addCost" HorizontalAlignment="Left" Height="23" Margin="285,111,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="71" FontSize="14"/>
+        <Label Content="Cost:" HorizontalAlignment="Left" Margin="242,109,0,0" VerticalAlignment="Top" FontWeight="Bold"/>
+        <Label Content="Item Desc:" HorizontalAlignment="Left" Margin="21,109,0,0" VerticalAlignment="Top" FontWeight="Bold"/>
+        <TextBox x:Name="ItemDescUpdate" HorizontalAlignment="Left" Height="23" Margin="98,223,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="139" FontSize="14"/>
+        <TextBox x:Name="CostUpdate" HorizontalAlignment="Left" Height="23" Margin="285,222,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="71" FontSize="14"/>
+        <Label Content="Cost:" HorizontalAlignment="Left" Margin="242,220,0,0" VerticalAlignment="Top" FontWeight="Bold"/>
+        <Label Content="Item Desc:" HorizontalAlignment="Left" Margin="21,220,0,0" VerticalAlignment="Top" FontWeight="Bold"/>
+        <TextBox x:Name="ItemSelectedCode" HorizontalAlignment="Left" Height="23" Margin="285,335,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="72" FontSize="14" IsReadOnly="True"/>
+        <Label Content="Item Code:" HorizontalAlignment="Left" Margin="209,332,0,0" VerticalAlignment="Top" FontWeight="Bold"/>
+        <DataGrid x:Name="select" HorizontalAlignment="Left" Height="568" Margin="494,4,0,0" VerticalAlignment="Top" Width="501" SelectionChanged="ItemDescDataGrid_SelectionChanged">
+            <DataGrid.Columns>
+                <DataGridTextColumn x:Name="itemCodeColumn" Binding="{Binding ItemCode}" Header="Item Code" Width="75" IsReadOnly="True"/>
+                <DataGridTextColumn x:Name="itemDescColumn" Binding="{Binding ItemDesc}" Header="Item Desc" Width="160" IsReadOnly="True"/>
+                <DataGridTextColumn x:Name="costColumn" Binding="{Binding Cost}" Header="Cost" Width="75" IsReadOnly="True"/>
+            </DataGrid.Columns>
+        </DataGrid>
     </Grid>
 </Window>
