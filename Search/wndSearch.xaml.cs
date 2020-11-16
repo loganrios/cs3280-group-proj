@@ -106,6 +106,7 @@ namespace group_proj.Search
                 //{
                     //Test Invoice
                     //invoiceToEdit = (clsInvoice)dgResults.SelectedItem;
+                    //test
 
                     clsInvoice testinvoice = new clsInvoice(44, new DateTime(), 44);
 
