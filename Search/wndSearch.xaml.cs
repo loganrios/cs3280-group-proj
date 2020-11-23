@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -54,6 +55,19 @@ namespace group_proj.Search
                              MethodInfo.GetCurrentMethod().Name, ex.Message);
             }
         }
+
+        public wndSearch()
+        {
+            InitializeComponent();
+
+            Application.Current.ShutdownMode = ShutdownMode.OnMainWindowClose;
+
+            classSearchLogic = new clsSearchLogic();
+
+            fillDataGrid();
+        }
+
+
 
         /// <summary>
         /// TODO Cant figure out why this is not filling the data grid for me
@@ -139,6 +153,11 @@ namespace group_proj.Search
                 System.IO.File.AppendAllText("C:\\Error.txt", Environment.NewLine +
                                              "HandleError Exception: " + ex.Message);
             }
+        }
+
+        private void dgResults_AutoGeneratingColumn(object sender, DataGridAutoGeneratingColumnEventArgs e)
+        {
+            e.Column.Header = ((PropertyDescriptor)e.PropertyDescriptor).DisplayName;
         }
     }
 }

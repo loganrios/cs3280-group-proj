@@ -9,7 +9,7 @@
     <Grid>
         <StackPanel HorizontalAlignment="Left" Height="399" Margin="254,0,0,0" VerticalAlignment="Top" Width="358">
             <Label x:Name="lblResult" Content="Results: "/>
-            <DataGrid x:Name="dgResults" Height="321"  Margin="0,5,0,10" AutoGenerateColumns="False" MaxColumnWidth="20"/>
+            <DataGrid x:Name="dgResults" Height="321"  Margin="0,5,0,10" AutoGeneratingColumn="dgResults_AutoGeneratingColumn" IsReadOnly="True" />
             <StackPanel Orientation="Horizontal">
                 <Button x:Name="btnDeleteSelection" Content="Delete Invoice" Click="btnDeleteSelection_Click" />
                 <Button x:Name="btnEditInvoice" Content="Edit Invoice" Click="btnEditInvoice_Click" />

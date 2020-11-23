@@ -61,7 +61,7 @@ namespace group_proj.Search
             try
             {
                 sSQLTOReturn = "SELECT * FROM Invoices WHERE InvoiceNum = " + iInvoiceNumber.ToString() +
-                " AND InvoiceDate = #" + dtInvoiceDate.ToString() + "#";
+                " AND InvoiceDate = #" + dtInvoiceDate.ToShortDateString() + "#";
                 return sSQLTOReturn;
             }
             catch (Exception ex)
@@ -83,7 +83,7 @@ namespace group_proj.Search
             try
             {
                 sSQLTOReturn = "SELECT * FROM Invoices WHERE InvoiceNum = " + iInvoiceNumber.ToString() +
-                                " AND InvoiceDate = #" + dtInvoiceDate.ToString() + "# AND TotalCost = " + dTotalCost.ToString();
+                                " AND InvoiceDate = #" + dtInvoiceDate.ToShortDateString() + "# AND TotalCost = " + dTotalCost.ToString();
                 return sSQLTOReturn;
             }
             catch (Exception ex)
@@ -121,7 +121,7 @@ namespace group_proj.Search
         {
             try
             {
-                sSQLTOReturn = "SELECT * FROM Invoices WHERE InvoiceDate = #" + dtInvoiceDate.ToString() + "#";
+                sSQLTOReturn = "SELECT * FROM Invoices WHERE InvoiceDate = #" + dtInvoiceDate.ToShortDateString() + "#";
                 return sSQLTOReturn;
             }
             catch (Exception ex)
@@ -142,7 +142,7 @@ namespace group_proj.Search
             try
             {
                 sSQLTOReturn = "SELECT * FROM Invoices WHERE InvoiceDate = #" +
-                                dtInvoiceDate.ToString() + "# AND TotalCost = " + dTotalCost.ToString();
+                                dtInvoiceDate.ToShortDateString() + "# AND TotalCost = " + dTotalCost.ToString();
                 return sSQLTOReturn;
             }
             catch (Exception ex)
