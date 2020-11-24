@@ -84,17 +84,23 @@ namespace group_proj.Search
             }
         }
 
-        /// <summary>
-        /// Returns a string to send to main window
-        /// </summary>
-        /// <param name="selectedItem">Class invoice</param>
-        /// <returns>String of Invoice num</returns>
-        public int invoiceToSendToEdit(clsInvoice selectedItem)
+        public List<int> pullAllInvoiceNumbers()
         {
             try
             {
-                clsInvoice invoiceToEdit = selectedItem;
-                return invoiceToEdit.iInvoiceNum;
+                List<int> invoiceToReturn = new List<int>();
+
+                sSQL = classSearchSQL.returnInvoices();
+
+                ds = classDataAccess.ExecuteSQLStatement(sSQL, ref iNumRetValues);
+
+
+                for (int i = 0; i < iNumRetValues; i++)
+                {
+                    invoiceToReturn.Add((int)ds.Tables[0].Rows[i][0]);
+                }
+
+                return invoiceToReturn;
             }
             catch (Exception ex)
             {
@@ -102,5 +108,52 @@ namespace group_proj.Search
                                     MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
             }
         }
+
+        public List<int> pullAllInvoiceCharges()
+        {
+            try
+            {
+                List<int> invoiceToReturn = new List<int>();
+
+                sSQL = classSearchSQL.returnInvoices();
+
+                ds = classDataAccess.ExecuteSQLStatement(sSQL, ref iNumRetValues);
+
+
+                for (int i = 0; i < iNumRetValues; i++)
+                {
+                    invoiceToReturn.Add((int)ds.Tables[0].Rows[i][2]);
+                }
+
+                invoiceToReturn.Sort();
+
+                return invoiceToReturn;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." +
+                                    MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
+            }
+        }
+
+
+        ///// <summary>
+        ///// Returns a string to send to main window
+        ///// </summary>
+        ///// <param name="selectedItem">Class invoice</param>
+        ///// <returns>String of Invoice num</returns>
+        //public int invoiceToSendToEdit(clsInvoice selectedItem)
+        //{
+        //    try
+        //    {
+        //        clsInvoice invoiceToEdit = selectedItem;
+        //        return invoiceToEdit.iInvoiceNum;
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." +
+        //                            MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
+        //    }
+        //}
     }
 }

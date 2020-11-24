@@ -48,6 +48,9 @@ namespace group_proj.Search
 
                 classSearchLogic = new clsSearchLogic();
 
+                updateDataGrid();
+                updateCbInvoiceNum();
+                updateCbTotalCharge();
             }
             catch (Exception ex)
             {
@@ -56,29 +59,25 @@ namespace group_proj.Search
             }
         }
 
-        public wndSearch()
+        private void updateCbTotalCharge()
         {
-            InitializeComponent();
-
-            Application.Current.ShutdownMode = ShutdownMode.OnMainWindowClose;
-
-            classSearchLogic = new clsSearchLogic();
-
-            fillDataGrid();
+            cbTotalCharge.ItemsSource = classSearchLogic.pullAllInvoiceCharges();
         }
 
-
+        private void updateCbInvoiceNum()
+        {
+            cbInvoiceNumber.ItemsSource = classSearchLogic.pullAllInvoiceNumbers();
+        }
 
         /// <summary>
-        /// TODO Cant figure out why this is not filling the data grid for me
+        /// Fills the data grid
         /// </summary>
-        public void fillDataGrid()
+        public void updateDataGrid()
         {
             try
             {
-                List<clsInvoice> testList = classSearchLogic.pullAllInvoice();
+                dgResults.ItemsSource = classSearchLogic.pullAllInvoice();
 
-                dgResults.ItemsSource = testList;
             }
             catch (Exception ex)
             {
@@ -116,18 +115,12 @@ namespace group_proj.Search
             try
             {
 
-                //if ((clsInvoice)dgResults.SelectedItem != null)
-                //{
-                    //Test Invoice
-                    //invoiceToEdit = (clsInvoice)dgResults.SelectedItem;
-                    //test
-
-                    clsInvoice testinvoice = new clsInvoice(44, new DateTime(), 44);
-
-                    invoiceToEdit = testinvoice;
+                if ((clsInvoice)dgResults.SelectedItem != null)
+                {
+                    invoiceToEdit = (clsInvoice)dgResults.SelectedItem;
 
                     this.Close();
-                //}
+                }
             }
             catch (Exception ex)
             {
@@ -159,5 +152,6 @@ namespace group_proj.Search
         {
             e.Column.Header = ((PropertyDescriptor)e.PropertyDescriptor).DisplayName;
         }
+
     }
 }
