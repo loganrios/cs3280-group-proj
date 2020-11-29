@@ -59,14 +59,36 @@ namespace group_proj.Search
             }
         }
 
+        /// <summary>
+        /// Updates the Total Charge Combo Box
+        /// </summary>
         private void updateCbTotalCharge()
         {
-            cbTotalCharge.ItemsSource = classSearchLogic.pullAllInvoiceCharges();
+            try
+            {
+                cbTotalCharge.ItemsSource = classSearchLogic.pullAllInvoiceCharges();
+            }
+            catch (Exception ex)
+            {
+                HandleError(MethodInfo.GetCurrentMethod().DeclaringType.Name,
+                             MethodInfo.GetCurrentMethod().Name, ex.Message);
+            }
         }
 
+        /// <summary>
+        /// Updates the Invoice Combo Box
+        /// </summary>
         private void updateCbInvoiceNum()
         {
-            cbInvoiceNumber.ItemsSource = classSearchLogic.pullAllInvoiceNumbers();
+            try
+            {
+                cbInvoiceNumber.ItemsSource = classSearchLogic.pullAllInvoiceNumbers();
+            }
+            catch (Exception ex)
+            {
+                HandleError(MethodInfo.GetCurrentMethod().DeclaringType.Name,
+                             MethodInfo.GetCurrentMethod().Name, ex.Message);
+            }
         }
 
         /// <summary>
@@ -133,37 +155,113 @@ namespace group_proj.Search
             }
         }
 
+        /// <summary>
+        /// Makes the columns pretty when they auto generate
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void dgResults_AutoGeneratingColumn(object sender, DataGridAutoGeneratingColumnEventArgs e)
         {
-            e.Column.Header = ((PropertyDescriptor)e.PropertyDescriptor).DisplayName;
+            try
+            {
+                e.Column.Header = ((PropertyDescriptor)e.PropertyDescriptor).DisplayName;
+            }
+            catch (Exception ex)
+            {
+                HandleError(MethodInfo.GetCurrentMethod().DeclaringType.Name,
+                             MethodInfo.GetCurrentMethod().Name, ex.Message);
+            }
         }
 
+        /// <summary>
+        /// Handles when the Invoice Number combo box is changed 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void cbInvoiceNumber_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            updateListBasedOnFilter();
+            try
+            {
+                updateListBasedOnFilter();
+            }
+            catch (Exception ex)
+            {
+                HandleError(MethodInfo.GetCurrentMethod().DeclaringType.Name,
+                             MethodInfo.GetCurrentMethod().Name, ex.Message);
+            }
         }
 
+        /// <summary>
+        /// Updates the main list based on different filters applied
+        /// </summary>
         private void updateListBasedOnFilter()
         {
-            dgResults.ItemsSource =
-                classSearchLogic.determineFilter(cbInvoiceNumber.SelectedItem, cbTotalCharge.SelectedItem, dateInvoiceDate.SelectedDate);
+            try
+            {
+                dgResults.ItemsSource =
+                    classSearchLogic.determineFilter(cbInvoiceNumber.SelectedItem, cbTotalCharge.SelectedItem, dateInvoiceDate.SelectedDate);
+            }
+            catch (Exception ex)
+            {
+                System.IO.File.AppendAllText("C:\\Error.txt", Environment.NewLine +
+                                             "HandleError Exception: " + ex.Message);
+            }
         }
 
+        /// <summary>
+        /// Handles when the total charge is changes
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void cbTotalCharge_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            updateListBasedOnFilter();
+            try
+            {
+                updateListBasedOnFilter();
+            }
+            catch (Exception ex)
+            {
+                HandleError(MethodInfo.GetCurrentMethod().DeclaringType.Name,
+                             MethodInfo.GetCurrentMethod().Name, ex.Message);
+            }
         }
 
+        /// <summary>
+        /// Handles when the date filter is changed
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void DatePicker_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
         {
-            updateListBasedOnFilter();
+            try
+            {
+                updateListBasedOnFilter();
+            }
+            catch (Exception ex)
+            {
+                HandleError(MethodInfo.GetCurrentMethod().DeclaringType.Name,
+                             MethodInfo.GetCurrentMethod().Name, ex.Message);
+            }
         }
 
+        /// <summary>
+        /// Handles the Clear Filter button 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void btnEClearFilter_Click(object sender, RoutedEventArgs e)
         {
-            dateInvoiceDate.SelectedDate = null;
-            cbInvoiceNumber.SelectedItem = null;
-            cbTotalCharge.SelectedItem = null;
-         }
+            try
+            {
+                dateInvoiceDate.SelectedDate = null;
+                cbInvoiceNumber.SelectedItem = null;
+                cbTotalCharge.SelectedItem = null;
+            }
+            catch (Exception ex)
+            {
+                HandleError(MethodInfo.GetCurrentMethod().DeclaringType.Name,
+                             MethodInfo.GetCurrentMethod().Name, ex.Message);
+            }
+        }
     }
 }

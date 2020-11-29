@@ -62,6 +62,7 @@ namespace group_proj.Search
         {
             try
             {
+                //Temp list to return
                 List<clsInvoice> invoiceToReturn = new List<clsInvoice>();
 
                 sSQL = classSearchSQL.returnInvoices();
@@ -84,10 +85,15 @@ namespace group_proj.Search
             }
         }
 
+        /// <summary>
+        /// Returns all invoices for comboBox
+        /// </summary>
+        /// <returns>Int of Invoice Numbers</returns>
         public List<int> pullAllInvoiceNumbers()
         {
             try
             {
+                //Temp list to return
                 List<int> invoiceToReturn = new List<int>();
 
                 sSQL = classSearchSQL.returnInvoices();
@@ -111,11 +117,18 @@ namespace group_proj.Search
             }
         }
 
+        /// <summary>
+        /// Returns List of Invoice Charges for ComboBox
+        /// </summary>
+        /// <returns>Int of Charges</returns>
         public List<int> pullAllInvoiceCharges()
         {
             try
             {
+                //Temp list to filter out below
                 List<int> listToFilter = new List<int>();
+
+                //Temp list to return
                 List<int> listToReturn = new List<int>();
 
 
@@ -142,72 +155,68 @@ namespace group_proj.Search
             }
         }
 
+        /// <summary>
+        /// using filters selected, updates invoice list
+        /// </summary>
+        /// <param name="cbInvoiceNumber"></param>
+        /// <param name="cbTotalCharge"></param>
+        /// <param name="selectedDate"></param>
+        /// <returns>List of invoices</returns>
         internal List<clsInvoice> determineFilter(object cbInvoiceNumber, object cbTotalCharge, DateTime? selectedDate)
         {
-            List<clsInvoice> listToReturn = new List<clsInvoice>();
+            try
+            {
+                //temp filter to return
+                List<clsInvoice> listToReturn = new List<clsInvoice>();
 
-            if (cbInvoiceNumber != null && cbTotalCharge != null && selectedDate != null)
-            {
-                sSQL = classSearchSQL.returnInvoices((int)cbInvoiceNumber, (DateTime)selectedDate, (int)cbTotalCharge);
-            }
-            else if (cbInvoiceNumber != null && cbTotalCharge != null)
-            {
-                sSQL = classSearchSQL.returnInvoices((int)cbInvoiceNumber, (int)cbTotalCharge);
-            }
-            else if (cbTotalCharge != null && selectedDate != null)
-            {
-                sSQL = classSearchSQL.returnInvoices((DateTime)selectedDate, (int)cbTotalCharge);
-            }
-            else if (cbInvoiceNumber != null && selectedDate != null)
-            {
-                sSQL = classSearchSQL.returnInvoices((int)cbInvoiceNumber, (DateTime)selectedDate);
-            }
-            else if (cbInvoiceNumber != null)
-            {
-                sSQL = classSearchSQL.returnInvoices((int)cbInvoiceNumber);
-            }
-            else if (cbTotalCharge != null)
-            {
-                sSQL = classSearchSQL.returnInvoicesTotalCostOnly((int)cbTotalCharge);
-            }
-            else if (selectedDate != null)
-            {
-                sSQL = classSearchSQL.returnInvoices((DateTime)selectedDate);
-            }
-            else
-            {
-                sSQL = sSQL = classSearchSQL.returnInvoices();
-            }
+                if (cbInvoiceNumber != null && cbTotalCharge != null && selectedDate != null)
+                {
+                    sSQL = classSearchSQL.returnInvoices((int)cbInvoiceNumber, (DateTime)selectedDate, (int)cbTotalCharge);
+                }
+                else if (cbInvoiceNumber != null && cbTotalCharge != null)
+                {
+                    sSQL = classSearchSQL.returnInvoices((int)cbInvoiceNumber, (int)cbTotalCharge);
+                }
+                else if (cbTotalCharge != null && selectedDate != null)
+                {
+                    sSQL = classSearchSQL.returnInvoices((DateTime)selectedDate, (int)cbTotalCharge);
+                }
+                else if (cbInvoiceNumber != null && selectedDate != null)
+                {
+                    sSQL = classSearchSQL.returnInvoices((int)cbInvoiceNumber, (DateTime)selectedDate);
+                }
+                else if (cbInvoiceNumber != null)
+                {
+                    sSQL = classSearchSQL.returnInvoices((int)cbInvoiceNumber);
+                }
+                else if (cbTotalCharge != null)
+                {
+                    sSQL = classSearchSQL.returnInvoicesTotalCostOnly((int)cbTotalCharge);
+                }
+                else if (selectedDate != null)
+                {
+                    sSQL = classSearchSQL.returnInvoices((DateTime)selectedDate);
+                }
+                else
+                {
+                    sSQL = sSQL = classSearchSQL.returnInvoices();
+                }
 
-            ds = classDataAccess.ExecuteSQLStatement(sSQL, ref iNumRetValues);
+                ds = classDataAccess.ExecuteSQLStatement(sSQL, ref iNumRetValues);
 
-            for (int i = 0; i < iNumRetValues; i++)
-            {
-                clsInvoice currentInvoice = new clsInvoice((int)ds.Tables[0].Rows[i][0], (DateTime)ds.Tables[0].Rows[i][1], (int)ds.Tables[0].Rows[i][2]);
-                listToReturn.Add(currentInvoice);
+                for (int i = 0; i < iNumRetValues; i++)
+                {
+                    clsInvoice currentInvoice = new clsInvoice((int)ds.Tables[0].Rows[i][0], (DateTime)ds.Tables[0].Rows[i][1], (int)ds.Tables[0].Rows[i][2]);
+                    listToReturn.Add(currentInvoice);
+                }
+
+                return listToReturn;
             }
-
-            return listToReturn;
+            catch (Exception ex)
+            {
+                throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." +
+                                    MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
+            }
         }
-
-
-        ///// <summary>
-        ///// Returns a string to send to main window
-        ///// </summary>
-        ///// <param name="selectedItem">Class invoice</param>
-        ///// <returns>String of Invoice num</returns>
-        //public int invoiceToSendToEdit(clsInvoice selectedItem)
-        //{
-        //    try
-        //    {
-        //        clsInvoice invoiceToEdit = selectedItem;
-        //        return invoiceToEdit.iInvoiceNum;
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." +
-        //                            MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
-        //    }
-        //}
     }
 }
