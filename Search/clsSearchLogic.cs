@@ -100,6 +100,8 @@ namespace group_proj.Search
                     invoiceToReturn.Add((int)ds.Tables[0].Rows[i][0]);
                 }
 
+                invoiceToReturn.Sort();
+
                 return invoiceToReturn;
             }
             catch (Exception ex)
@@ -113,7 +115,9 @@ namespace group_proj.Search
         {
             try
             {
-                List<int> invoiceToReturn = new List<int>();
+                List<int> listToFilter = new List<int>();
+                List<int> listToReturn = new List<int>();
+
 
                 sSQL = classSearchSQL.returnInvoices();
 
@@ -122,18 +126,68 @@ namespace group_proj.Search
 
                 for (int i = 0; i < iNumRetValues; i++)
                 {
-                    invoiceToReturn.Add((int)ds.Tables[0].Rows[i][2]);
+                    listToFilter.Add((int)ds.Tables[0].Rows[i][2]);
                 }
 
-                invoiceToReturn.Sort();
 
-                return invoiceToReturn;
+                listToReturn = listToFilter.Distinct().ToList();
+
+                listToReturn.Sort();
+                return listToReturn;
             }
             catch (Exception ex)
             {
                 throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." +
                                     MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
             }
+        }
+
+        internal List<clsInvoice> determineFilter(object cbInvoiceNumber, object cbTotalCharge, DateTime? selectedDate)
+        {
+            List<clsInvoice> listToReturn = new List<clsInvoice>();
+
+            if (cbInvoiceNumber != null && cbTotalCharge != null && selectedDate != null)
+            {
+                sSQL = classSearchSQL.returnInvoices((int)cbInvoiceNumber, (DateTime)selectedDate, (int)cbTotalCharge);
+            }
+            else if (cbInvoiceNumber != null && cbTotalCharge != null)
+            {
+                sSQL = classSearchSQL.returnInvoices((int)cbInvoiceNumber, (int)cbTotalCharge);
+            }
+            else if (cbTotalCharge != null && selectedDate != null)
+            {
+                sSQL = classSearchSQL.returnInvoices((DateTime)selectedDate, (int)cbTotalCharge);
+            }
+            else if (cbInvoiceNumber != null && selectedDate != null)
+            {
+                sSQL = classSearchSQL.returnInvoices((int)cbInvoiceNumber, (DateTime)selectedDate);
+            }
+            else if (cbInvoiceNumber != null)
+            {
+                sSQL = classSearchSQL.returnInvoices((int)cbInvoiceNumber);
+            }
+            else if (cbTotalCharge != null)
+            {
+                sSQL = classSearchSQL.returnInvoicesTotalCostOnly((int)cbTotalCharge);
+            }
+            else if (selectedDate != null)
+            {
+                sSQL = classSearchSQL.returnInvoices((DateTime)selectedDate);
+            }
+            else
+            {
+                sSQL = sSQL = classSearchSQL.returnInvoices();
+            }
+
+            ds = classDataAccess.ExecuteSQLStatement(sSQL, ref iNumRetValues);
+
+            for (int i = 0; i < iNumRetValues; i++)
+            {
+                clsInvoice currentInvoice = new clsInvoice((int)ds.Tables[0].Rows[i][0], (DateTime)ds.Tables[0].Rows[i][1], (int)ds.Tables[0].Rows[i][2]);
+                listToReturn.Add(currentInvoice);
+            }
+
+            return listToReturn;
         }
 
 

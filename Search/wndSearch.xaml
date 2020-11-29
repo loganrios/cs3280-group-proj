@@ -11,25 +11,24 @@
             <Label x:Name="lblResult" Content="Results: "/>
             <DataGrid x:Name="dgResults" Height="321"  Margin="0,5,0,10" /> <!--AutoGeneratingColumn="dgResults_AutoGeneratingColumn>" IsReadOnly="True" />-->
             <StackPanel Orientation="Horizontal">
-                <Button x:Name="btnDeleteSelection" Content="Delete Invoice" Click="btnDeleteSelection_Click" />
-                <Button x:Name="btnEditInvoice" Content="Edit Invoice" Click="btnEditInvoice_Click" />
+                <Button x:Name="btnEditInvoice" Content="Select Invoice" Click="btnEditInvoice_Click" />
             </StackPanel>
         </StackPanel>
         <StackPanel HorizontalAlignment="Left" Margin="10,36,0,0" VerticalAlignment="Top" Width="181">
-            <Label x:Name="lblFilter" Content="Filter"/>
+            <Label x:Name="lblFilter" Content="Filter:"/>
             <StackPanel Orientation="Horizontal">
                 <Label x:Name="lblInvoiceNumber" Content="Invoice Number:"/>
-                <ComboBox x:Name="cbInvoiceNumber" Width="83"/>
+                <ComboBox x:Name="cbInvoiceNumber" Width="83" SelectionChanged="cbInvoiceNumber_SelectionChanged"/>
             </StackPanel>
             <StackPanel  Orientation="Horizontal">
                 <Label x:Name="lblInvoiceDate" Content="Invoice Date:"/>
-                <DatePicker/>
+                <DatePicker x:Name="dateInvoiceDate" SelectedDateChanged="DatePicker_SelectedDateChanged"/>
             </StackPanel>
             <StackPanel  Orientation="Horizontal">
                 <Label x:Name="lblTotalCharge" Content="Total Charge:"/>
-                <ComboBox x:Name="cbTotalCharge" Width="102"/>
+                <ComboBox x:Name="cbTotalCharge" Width="102" SelectionChanged="cbTotalCharge_SelectionChanged"/>
             </StackPanel>
-            <Button x:Name="btnEClearFilter" Content="Clear Filter" Height="40" Margin="47,5,44,0"/>
+            <Button x:Name="btnEClearFilter" Content="Clear Filter" Height="40" Margin="47,5,44,0" Click="btnEClearFilter_Click"/>
         </StackPanel>
     </Grid>
 </Window>

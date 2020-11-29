@@ -78,7 +78,7 @@ namespace group_proj.Search
         /// <param name="dtInvoiceDate">Invoice Date</param>
         /// <param name="dTotalCost">Total Cost</param>
         /// <returns>String for invoice based on parm</returns>
-        public string returnInvoices(int iInvoiceNumber, DateTime dtInvoiceDate, double dTotalCost)
+        public string returnInvoices(int iInvoiceNumber, DateTime dtInvoiceDate, int dTotalCost)
         {
             try
             {
@@ -98,7 +98,7 @@ namespace group_proj.Search
         /// </summary>
         /// <param name="dTotalCost">Total Cost</param>
         /// <returns>String for invoices based on cost</returns>
-        public string returnInvoices(double dTotalCost)
+        public string returnInvoicesTotalCostOnly(int dTotalCost)
         {
             try
             {
@@ -137,7 +137,7 @@ namespace group_proj.Search
         /// <param name="dtInvoiceDate">Invoice Date</param>
         /// <param name="dTotalCost">Total Cost</param>
         /// <returns>String based on invoice date and total cost</returns>
-        public string returnInvoices(DateTime dtInvoiceDate, double dTotalCost)
+        public string returnInvoices(DateTime dtInvoiceDate, int dTotalCost)
         {
             try
             {
@@ -158,7 +158,7 @@ namespace group_proj.Search
         /// <param name="iInvoiceNumber">Invoice Number</param>
         /// <param name="dTotalCost">Total Cost</param>
         /// <returns>String based on invoice number and total cost</returns>
-        public string returnInvoices(int iInvoiceNumber, double dTotalCost)
+        public string returnInvoices(int iInvoiceNumber, int dTotalCost)
         {
             try
             {

@@ -34,7 +34,7 @@ namespace group_proj.Search
         /// </summary>
         public clsInvoice invoiceToEdit { get; set; }
 
-
+     
         /// <summary>
         /// Constructor constructing things
         /// </summary>
@@ -86,24 +86,6 @@ namespace group_proj.Search
             }
         }
 
-        /// <summary>
-        /// Controls delete button
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void btnDeleteSelection_Click(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                //delete the item selected
-                this.Close();
-            }
-            catch (Exception ex)
-            {
-                HandleError(MethodInfo.GetCurrentMethod().DeclaringType.Name,
-                             MethodInfo.GetCurrentMethod().Name, ex.Message);
-            }
-        }
 
         /// <summary>
         /// Controls the edit button
@@ -118,8 +100,11 @@ namespace group_proj.Search
                 if ((clsInvoice)dgResults.SelectedItem != null)
                 {
                     invoiceToEdit = (clsInvoice)dgResults.SelectedItem;
-
                     this.Close();
+                }
+                else
+                {
+                    MessageBox.Show("Please Click an Invoice To Edit");
                 }
             }
             catch (Exception ex)
@@ -153,5 +138,32 @@ namespace group_proj.Search
             e.Column.Header = ((PropertyDescriptor)e.PropertyDescriptor).DisplayName;
         }
 
+        private void cbInvoiceNumber_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            updateListBasedOnFilter();
+        }
+
+        private void updateListBasedOnFilter()
+        {
+            dgResults.ItemsSource =
+                classSearchLogic.determineFilter(cbInvoiceNumber.SelectedItem, cbTotalCharge.SelectedItem, dateInvoiceDate.SelectedDate);
+        }
+
+        private void cbTotalCharge_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            updateListBasedOnFilter();
+        }
+
+        private void DatePicker_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
+        {
+            updateListBasedOnFilter();
+        }
+
+        private void btnEClearFilter_Click(object sender, RoutedEventArgs e)
+        {
+            dateInvoiceDate.SelectedDate = null;
+            cbInvoiceNumber.SelectedItem = null;
+            cbTotalCharge.SelectedItem = null;
+         }
     }
 }
