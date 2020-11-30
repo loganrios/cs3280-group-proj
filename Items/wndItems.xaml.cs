@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Data;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -26,47 +28,47 @@ namespace group_proj.Items
         clsItemsLogic logic = new clsItemsLogic();
         clsItemsSQL sqlQueries;
         DataGrid data;
-        public int index;
+        List<clsItem> dataInfo;
 
         public wndItems()
         {
             InitializeComponent();
             sqlQueries = new clsItemsSQL();
             data = new DataGrid();
-            //getItemsList();
+            DataContext = this;
+            getItemsList();
         }
 
-        //public void getItemsList()
-        //{
-        //    try
-        //    {
-        //        foreach (var item in sqlQueries.getItemsList())
-        //        {
-        //            itemDescDataGrid.Items.Add(item.ToString());
-        //        }
-        //    }
-        //    catch (Exception)
-        //    {
+        public void getItemsList()
+        {
+            try
+            {
+                itemdescdatagrid.ItemsSource = logic.getItemsList();
+            }
+            catch (Exception)
+            {
 
-        //        throw;
-        //    }
-        //}
+                throw;
+            }
+        }
 
         private void ItemDescDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             try
             {
                 data = sender as DataGrid;
-                DataRowView dataInfo = (DataRowView)data.SelectedItems[0];
-                ItemSelectedCode.Text = dataInfo.Row.ItemArray[0].ToString();
-                ItemDescUpdate.Text = dataInfo.Row.ItemArray[1].ToString();
-                CostUpdate.Text = dataInfo.Row.ItemArray[2].ToString();
-                index = data.SelectedIndex;
+                if(data.Items.Count != 0)
+                {
+                    dataInfo = data.SelectedItems.Cast<clsItem>().ToList();
+                    ItemSelectedCode.Text = dataInfo[0].ItemCode;
+                    ItemDescUpdate.Text = dataInfo[0].ItemDesc;
+                    CostUpdate.Text = dataInfo[0].Cost.ToString();
+                }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
 
-                throw;
+                MessageBox.Show(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." + MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message); 
             }
         }
 
@@ -75,13 +77,12 @@ namespace group_proj.Items
             try
             {
                 //Will be used to add items to the database
-                //sqlQueries.addItem(ItemSelectedCode.Text, addItem.Text, addCost.Text);
-
+                logic.addItem(addItem.Text, addCost.Text);
+                resetDG();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-
-                throw;
+                MessageBox.Show(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." + MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
             }
         }
 
@@ -90,21 +91,45 @@ namespace group_proj.Items
 
             try
             {
-                sqlQueries.updateCurrentRow(ItemSelectedCode.Text, ItemDescUpdate.Text, CostUpdate.Text);
                 //When applicable this method call updates the rows in the data grid.
-                //logic.updateItemRow(index, ItemDescUpdate.Text, CostUpdate.Text);
+                logic.updateItemRow(ItemSelectedCode.Text, ItemDescUpdate.Text, CostUpdate.Text);
+                resetDG();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-
-                throw;
+                MessageBox.Show(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." + MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
             }
 
         }
 
+        /// <summary>
+        /// Deletes item from the database using the item code.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void deleteItem_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("Deleting this row will permanently delete it from the database. Would you like to continue?", "Alert", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+            try
+            {
+                MessageBoxResult result = MessageBox.Show("Deleting this row will permanently delete it from the database. Would you like to continue?", "Alert", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+                if (result == MessageBoxResult.Yes)
+                {
+                    int checkRow = logic.checkInvoice(ItemSelectedCode.Text);
+                    if(checkRow == 0)
+                    {
+                       logic.deleteItem(ItemSelectedCode.Text);
+                       resetDG();
+                    }
+                    else
+                    {
+                        MessageBox.Show("Item cannot be deleted. The item is currently on invoice " + checkRow);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." + MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
+            }
         }
 
         /// <summary>
@@ -115,6 +140,22 @@ namespace group_proj.Items
         private void MainWindow_Click(object sender, RoutedEventArgs e)
         {
             this.Close();
+        }
+
+        private void Itemdescdatagrid_AutoGeneratedColumns(object sender, DataGridAutoGeneratingColumnEventArgs e)
+        {
+            e.Column.Header = ((PropertyDescriptor)e.PropertyDescriptor).DisplayName;
+        }
+
+        private void resetDG()
+        {
+            itemdescdatagrid.ItemsSource = null;
+            itemdescdatagrid.ItemsSource = logic.getItemsList();
+            ItemSelectedCode.Text = " ";
+            ItemDescUpdate.Text = " ";
+            CostUpdate.Text = " ";
+            addItem.Text = " ";
+            addCost.Text = " ";
         }
     }
 }
