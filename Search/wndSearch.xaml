@@ -5,30 +5,49 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:group_proj.Search"
         mc:Ignorable="d"
-        Title="Search" Height="450" Width="629.863">
+        Title="Search" Height="398" Width="629.863" WindowStartupLocation="CenterScreen" ResizeMode="NoResize">
     <Grid>
+        <Grid.Background>
+            <LinearGradientBrush EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
+                <GradientStop Color="White"/>
+                <GradientStop Color="#FF434F85" Offset="1"/>
+            </LinearGradientBrush>
+        </Grid.Background>
         <StackPanel HorizontalAlignment="Left" Height="399" Margin="254,0,0,0" VerticalAlignment="Top" Width="358">
-            <Label x:Name="lblResult" Content="Results: "/>
             <DataGrid x:Name="dgResults" Height="321"  Margin="0,5,0,10" AutoGeneratingColumn="dgResults_AutoGeneratingColumn" IsReadOnly="True" />
             <StackPanel Orientation="Horizontal">
-                <Button x:Name="btnEditInvoice" Content="Select Invoice" Click="btnEditInvoice_Click" />
+                <Button x:Name="btnEditInvoice" Content="Select Invoice" Click="btnEditInvoice_Click">
+                    <Button.Background>
+                        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                            <GradientStop Color="#FF7CB9F1" Offset="0"/>
+                            <GradientStop Color="#FFF0F0F0" Offset="1"/>
+                        </LinearGradientBrush>
+                    </Button.Background>
+                </Button>
             </StackPanel>
         </StackPanel>
         <StackPanel HorizontalAlignment="Left" Margin="10,36,0,0" VerticalAlignment="Top" Width="181">
-            <Label x:Name="lblFilter" Content="Filter:"/>
-            <StackPanel Orientation="Horizontal">
+            <Label x:Name="lblFilter" Content="Filter" HorizontalAlignment="Center" FontSize="18" FontWeight="Bold"/>
+            <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
                 <Label x:Name="lblInvoiceNumber" Content="Invoice Number:"/>
                 <ComboBox x:Name="cbInvoiceNumber" Width="83" SelectionChanged="cbInvoiceNumber_SelectionChanged"/>
             </StackPanel>
-            <StackPanel  Orientation="Horizontal">
+            <StackPanel  Orientation="Horizontal" Margin="0,5">
                 <Label x:Name="lblInvoiceDate" Content="Invoice Date:"/>
                 <DatePicker x:Name="dateInvoiceDate" SelectedDateChanged="DatePicker_SelectedDateChanged"/>
             </StackPanel>
-            <StackPanel  Orientation="Horizontal">
+            <StackPanel  Orientation="Horizontal" Margin="0,5">
                 <Label x:Name="lblTotalCharge" Content="Total Charge:"/>
                 <ComboBox x:Name="cbTotalCharge" Width="102" SelectionChanged="cbTotalCharge_SelectionChanged"/>
             </StackPanel>
-            <Button x:Name="btnEClearFilter" Content="Clear Filter" Height="40" Margin="47,5,44,0" Click="btnEClearFilter_Click"/>
+            <Button x:Name="btnEClearFilter" Content="Clear Filter" Height="40" Margin="0,5" Click="btnEClearFilter_Click">
+                <Button.Background>
+                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                        <GradientStop Color="#FF7CB9F1" Offset="0"/>
+                        <GradientStop Color="#FFF0F0F0" Offset="1"/>
+                    </LinearGradientBrush>
+                </Button.Background>
+            </Button>
         </StackPanel>
     </Grid>
 </Window>
