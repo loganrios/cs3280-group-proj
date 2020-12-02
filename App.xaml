@@ -4,6 +4,25 @@
              xmlns:local="clr-namespace:group_proj"
              StartupUri="Main/wndMain.xaml">
     <Application.Resources>
-         
+        <Style TargetType="Button">
+            <Setter Property="Background">
+                <Setter.Value>
+                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                        <GradientStop Color="#FF7CB9F1" Offset="0"/>
+                        <GradientStop Color="White" Offset="1"/>
+                    </LinearGradientBrush>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style TargetType="Grid">
+            <Setter Property="Background">
+                <Setter.Value>
+                    <LinearGradientBrush EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
+                        <GradientStop Color="White"/>
+                        <GradientStop Color="#FF434F85" Offset="1"/>
+                    </LinearGradientBrush>
+                </Setter.Value>
+            </Setter>
+        </Style>
     </Application.Resources>
 </Application>
