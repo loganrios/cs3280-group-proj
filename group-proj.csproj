@@ -79,6 +79,7 @@
     <Compile Include="clsDataAccess.cs" />
     <Compile Include="clsInvoice.cs" />
     <Compile Include="clsItem.cs" />
+    <Compile Include="clsLineItem.cs" />
     <Compile Include="Search\clsSearchLogic.cs" />
     <Compile Include="Search\clsSearchSQL.cs" />
     <Compile Include="Search\wndSearch.xaml.cs">

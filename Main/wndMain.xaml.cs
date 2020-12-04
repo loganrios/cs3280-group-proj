@@ -12,7 +12,7 @@ namespace group_proj.Main
     public partial class wndMain : Window
     {
         private clsInvoice ActiveInvoice;
-        private List<clsItem> AvailableItems; 
+        private List<clsItem> AvailableItems;
 
         public wndMain()
         {
@@ -92,13 +92,20 @@ namespace group_proj.Main
                 return;
             }
 
-            this.ActiveInvoice.LineItems.Add(itemToAdd);
+            int lineItemNo = clsMainLogic.GetNextLineItemNumber(this.ActiveInvoice.LineItems);
+            this.ActiveInvoice.LineItems.Add(new clsLineItem(lineItemNo, itemToAdd));
             DrawItemsDataGrid(this.ActiveInvoice);
         }
 
         private void btnDeleteSelectedItem_Click(object sender, RoutedEventArgs e)
         {
+            if (!int.TryParse(txtSelectedItemID.Text, out int ln))
+            {
+                return;
+            }
 
+            this.ActiveInvoice.LineItems = clsMainLogic.RemoveLineItem(this.ActiveInvoice.LineItems, ln);
+            DrawItemsDataGrid(this.ActiveInvoice);
         }
 
         private void ToggleMenuActive()
@@ -147,9 +154,9 @@ namespace group_proj.Main
             await Task.Delay(10);
         }
 
-        private async void BindSelectedItem(clsItem item)
+        private async void BindSelectedItem(clsLineItem item)
         {
-            txtSelectedItemID.Text = item.ItemCode;
+            txtSelectedItemID.Text = item.LineItemNumber.ToString();
             txtSelectedItemName.Text = item.ItemDesc;
             txtSelectedItemCost.Text = item.Cost.ToString("0.##");
             await Task.Delay(10);
@@ -157,7 +164,10 @@ namespace group_proj.Main
 
         private void dgInvoiceItems_MouseUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
-            BindSelectedItem((clsItem)dgInvoiceItems.SelectedItems[0]);
+            if (dgInvoiceItems.SelectedItems.Count > 0)
+            {
+                BindSelectedItem((clsLineItem)dgInvoiceItems.SelectedItems[0]);
+            }
         }
     }
 } 

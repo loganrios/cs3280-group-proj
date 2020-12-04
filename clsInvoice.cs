@@ -20,14 +20,14 @@ namespace group_proj
         [DisplayName("Total Cost")]
         public int dTotalCost { get; set; }
 
-        public List<clsItem> LineItems;
+        public List<clsLineItem> LineItems;
 
         public clsInvoice (int iInvoiceNum, DateTime dtInvoiceDate, int dTotalCost)
         {
             this.iInvoiceNum = iInvoiceNum;
             this.dTotalCost = dTotalCost;
             sInvoiceDate = dtInvoiceDate.ToShortDateString();
-            LineItems = new List<clsItem>();
+            LineItems = new List<clsLineItem>();
         }
 
         public clsInvoice()
@@ -36,7 +36,7 @@ namespace group_proj
             this.InvoiceDate = DateTime.Now;
             this.sInvoiceDate = DateTime.Now.ToShortDateString();
             this.dTotalCost = 0;
-            this.LineItems = new List<clsItem>();
+            this.LineItems = new List<clsLineItem>();
         }
     }
 }

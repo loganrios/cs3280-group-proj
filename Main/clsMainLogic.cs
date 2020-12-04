@@ -35,10 +35,29 @@ namespace group_proj.Main
             return availableItems.Find(x => x.ItemCode.Equals(code));
         }
 
+        public static List<clsLineItem> RemoveLineItem(List<clsLineItem> items, int lineItemNo)
+        {
+            items.RemoveAll(x => x.LineItemNumber == lineItemNo);
+            return items;
+        }
+
         public static clsInvoice GetInvoiceFromId(int id)
         {
             // todo
             return new clsInvoice();
+        }
+
+        public static int GetNextLineItemNumber(List<clsLineItem> lineitems)
+        {
+            int m = 0;
+            foreach (clsLineItem li in lineitems)
+            {
+                if (li.LineItemNumber > m)
+                {
+                    m = li.LineItemNumber;
+                }
+            }
+            return m + 1;
         }
     }
 }
