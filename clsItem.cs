@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace group_proj
 {
-    class clsItem
+    public class clsItem
     {
         [DisplayName("Item Code")]
         public string ItemCode { get; set; }

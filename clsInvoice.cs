@@ -10,24 +10,33 @@ namespace group_proj
     public class clsInvoice
     {
         [DisplayName("Invoice Number")]
-        public int iInvoiceNum { get; set; }
+        public int? iInvoiceNum { get; set; }
 
         [DisplayName("Invoice Date")]
         public string sInvoiceDate { get; set; }
 
+        public DateTime InvoiceDate { get; set; }
+
         [DisplayName("Total Cost")]
         public int dTotalCost { get; set; }
 
+        public List<clsItem> LineItems;
 
         public clsInvoice (int iInvoiceNum, DateTime dtInvoiceDate, int dTotalCost)
         {
             this.iInvoiceNum = iInvoiceNum;
             this.dTotalCost = dTotalCost;
-
-            DateTime date = dtInvoiceDate;
-            sInvoiceDate = date.ToShortDateString();
+            sInvoiceDate = dtInvoiceDate.ToShortDateString();
+            LineItems = new List<clsItem>();
         }
 
-
+        public clsInvoice()
+        {
+            this.iInvoiceNum = null;
+            this.InvoiceDate = DateTime.Now;
+            this.sInvoiceDate = DateTime.Now.ToShortDateString();
+            this.dTotalCost = 0;
+            this.LineItems = new List<clsItem>();
+        }
     }
 }

@@ -52,6 +52,11 @@ namespace group_proj.Main
                 "select ItemCode, ItemDesc, Cost from ItemDesc;";
         }
 
+        public string GetAllItemCodes()
+        {
+            return "select ItemCode from ItemDesc;";
+        }
+
         public string GetLineItemsInInvoice(int InvoiceID)
         {
             return

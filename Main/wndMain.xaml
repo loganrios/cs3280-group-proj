@@ -6,33 +6,55 @@
         xmlns:local="clr-namespace:group_proj.Main"
         xmlns:group_proj="clr-namespace:group_proj" x:Class="group_proj.Main.wndMain"
         mc:Ignorable="d"
-        Title="wndMain" Height="450" Width="665.752">
+        Title="wndMain" Height="550.955" Width="676.492">
     <StackPanel Orientation="Vertical">
-        <GroupBox Header="Menu" Padding="5" Margin="5">
+        <GroupBox x:Name="gbMenu" Header="Menu" Padding="5" Margin="5">
             <StackPanel Orientation="Horizontal">
-                <Button Content="New Invoice" Margin="5" Padding="5"/>
+                <Button x:Name="btnNewInvoice" Content="New Invoice" Margin="5" Padding="5" Click="btnNewInvoice_Click"/>
                 <Button x:Name="btnSearchForInvoice" Content="Search for Invoice" Click="btnSearchForInvoice_Click" Margin="5" Padding="5" />
                 <Button x:Name="btnEditAvailableItems" Content="Edit Available Items" Click="btnEditAvailableItems_Click" Margin="5" Padding="5"/>
             </StackPanel>
         </GroupBox>
-        <GroupBox Header="Active Invoice" Padding="5" Margin="5">
+        <GroupBox x:Name="gbActiveInvoice" Header="Active Invoice" Padding="5" Margin="5">
             <StackPanel Orientation="Vertical">
                 <StackPanel Orientation="Horizontal">
                     <Label Content="Invoice Number: " Padding="5" Margin="5"/>
-                    <TextBox Width="120" Margin="5"/>
+                    <TextBox x:Name="txtInvoiceNumber" Width="120" Margin="5"/>
                     <Label Content="Invoice Date: " Padding="5" Margin="5"/>
-                    <TextBox Width="120" Margin="5"/>
+                    <DatePicker x:Name="dpInvoiceDate" Width="120" Margin="5" SelectedDateChanged="dpInvoiceDate_SelectedDateChanged"/>
                 </StackPanel>
-                <DataGrid Height="150">
-                    <!-- Here goes the Invoice + LineItems join -->
-                </DataGrid>
-                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                    <Label Content="Total Cost: " Padding="5" Margin="5"/>
-                    <TextBox Width="75" Margin="5" />
-                </StackPanel>
+                <GroupBox Header="Invoice Items" Margin="5" Padding="5">
+                    <StackPanel Orientation="Vertical">
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                            <Label Content="Add Item: " Margin="5" Padding="5"/>
+                            <ComboBox x:Name="cbChooseAddItem" Width="50" Margin="5" Padding="5" SelectionChanged="cbChooseAddItem_SelectionChanged">
+                                <ComboBoxItem IsSelected="True">#</ComboBoxItem>
+                            </ComboBox>
+                            <TextBox x:Name="txtAddItemDesc" Text="Item Description" Width="200" Margin="5" Padding="5" IsReadOnly="True" />
+                            <Button x:Name="btnAddItem" Content="Add" Margin="5" Padding="5" Click="btnAddItem_Click" />
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                            <Label Content="ID: " Padding="5" Margin="5" />
+                            <TextBox x:Name="txtSelectedItemID" Width="50" Margin="5" Padding="5" IsReadOnly="True" />
+                            <Label Content="Desc: " Padding="5" Margin="5" />
+                            <TextBox x:Name="txtSelectedItemName" Width="150" Margin="5" Padding="5" IsReadOnly="True" />
+                            <Label Content="Cost: " Padding="5" Margin="5" />
+                            <TextBox x:Name="txtSelectedItemCost" Width="50" Padding="5" Margin="5" IsReadOnly="True" />
+                            <Button x:Name="btnDeleteSelectedItem" Content="Delete Selected Item" Margin="5" Padding="5" Click="btnDeleteSelectedItem_Click" />
+                        </StackPanel>
+                        <DataGrid x:Name="dgInvoiceItems" Height="150" IsReadOnly="True" SelectionMode="Single" MouseUp="dgInvoiceItems_MouseUp">
+                            <!-- Here goes the Invoice + LineItems join -->
+                        </DataGrid>
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                            <Label Content="Total Cost: " Padding="5" Margin="5"/>
+                            <TextBox x:Name="txtTotalCost" Width="75" Margin="5" IsReadOnly="True"/>
+                        </StackPanel>
+                    </StackPanel>
+                </GroupBox>
                 <StackPanel Orientation="Horizontal">
-                    <Button Content="Save Changes" Margin="5" Padding="5"/>
-                    <Button Content="Delete Invoice" Margin="5" Padding="5"/>
+                    <Button x:Name="btnSaveChanges" Content="Save Invoice Changes" Margin="5" Padding="5" Click="btnSaveChanges_Click"/>
+                    <Button x:Name="btnDiscardChanges" Content="Discard Invoice Changes" Margin="5" Padding="5" Click="btnDiscardChanges_Click" />
+                    <Button x:Name="btnDeleteInvoice" Content="Delete Invoice" Margin="5" Padding="5" Click="btnDeleteInvoice_Click"/>
                 </StackPanel>
             </StackPanel>
         </GroupBox>
