@@ -28,9 +28,9 @@
             <StackPanel Orientation="Vertical">
                 <StackPanel Orientation="Horizontal">
                     <Label Content="Invoice Number: " Padding="5" Margin="5"/>
-                    <TextBox x:Name="txtInvoiceNumber" Width="120" Margin="5" IsReadOnly="True"/>
+                    <TextBox x:Name="txtInvoiceNumber" Width="200" Margin="5" IsReadOnly="True"/>
                     <StackPanel Orientation="Horizontal">
-                        <Label Content="Invoice Date: " Padding="5" Margin="5"/>
+                        <Label Content="Date: " Padding="5" Margin="5"/>
                         <DatePicker x:Name="dpInvoiceDate" Width="120" Margin="5" SelectedDateChanged="dpInvoiceDate_SelectedDateChanged"/>
                     </StackPanel>
                     <Button x:Name="btnEditInvoice" Content="Edit" Padding="5" Margin="5" Click="btnEditInvoice_Click" />

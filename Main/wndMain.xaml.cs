@@ -380,7 +380,7 @@ namespace group_proj.Main
                 this.ActiveInvoice = i;
                 if (i.iInvoiceNum is null)
                 {
-                    txtInvoiceNumber.Text = "TBD";
+                    txtInvoiceNumber.Text = "TBD - Select Date and Choose Edit";
                 }
                 else
                 {
