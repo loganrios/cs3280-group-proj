@@ -63,6 +63,7 @@ namespace group_proj.Main
                 s.invoiceToEdit.LineItems = clsMainLogic.GetLineItemsForInvoice(s.invoiceToEdit.iInvoiceNum);
                 BindInvoice(s.invoiceToEdit);
                 DrawItemsDataGrid(this.ActiveInvoice);
+                ToggleEditInvoiceItemsOff();
             }
             catch (Exception ex)
             {
@@ -102,6 +103,7 @@ namespace group_proj.Main
             {
                 BindInvoice(clsMainLogic.GenerateNewInvoice());
                 DrawItemsDataGrid(this.ActiveInvoice);
+                ToggleEditInvoiceItemsOff();
             }
             catch (Exception ex)
             {
@@ -161,7 +163,7 @@ namespace group_proj.Main
                 this.ActiveInvoice = clsMainLogic.GenerateNewInvoice();
                 BindInvoice(ActiveInvoice);
                 DrawItemsDataGrid(ActiveInvoice);
-                ToggleEditInvoiceItems();
+                ToggleEditInvoiceItemsOn();
                 ToggleMenuActive();
             }
             catch (Exception ex)
@@ -308,7 +310,7 @@ namespace group_proj.Main
                     DrawItemsDataGrid(this.ActiveInvoice);
                 }
 
-                ToggleEditInvoiceItems();
+                ToggleEditInvoiceItemsOn();
             }
             catch (Exception ex)
             {
@@ -324,7 +326,15 @@ namespace group_proj.Main
         /// </summary>
         private void ToggleMenuActive()
         {
-            gbActiveInvoice.IsEnabled = false;
+            try
+            {
+                gbActiveInvoice.IsEnabled = false;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." +
+                                    MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
+            }
         }
 
         /// <summary>
@@ -332,16 +342,24 @@ namespace group_proj.Main
         /// </summary>
         private void ToggleInvoiceActive()
         {
-            gbMenu.IsEnabled = false;
-            this.AvailableItems = clsMainLogic.GetAllAvailableItems();
-
-            cbChooseAddItem.Items.Clear();
-
-            foreach (clsItem item in this.AvailableItems)
+            try
             {
-                cbChooseAddItem.Items.Add(item.ItemCode);
+                gbMenu.IsEnabled = false;
+                this.AvailableItems = clsMainLogic.GetAllAvailableItems();
+
+                cbChooseAddItem.Items.Clear();
+
+                foreach (clsItem item in this.AvailableItems)
+                {
+                    cbChooseAddItem.Items.Add(item.ItemCode);
+                }
+                gbActiveInvoice.IsEnabled = true;
             }
-            gbActiveInvoice.IsEnabled = true;
+            catch (Exception ex)
+            {
+                throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." +
+                                    MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
+            }
         }
 
         /// <summary>
@@ -350,25 +368,33 @@ namespace group_proj.Main
         /// <param name="i"></param>
         private void BindInvoice(clsInvoice i)
         {
-            if (i is null)
+            try
             {
+                if (i is null)
+                {
+                    return;
+                }
+
+                this.ActiveInvoice = i;
+                if (i.iInvoiceNum is null)
+                {
+                    txtInvoiceNumber.Text = "TBD";
+                }
+                else
+                {
+                    txtInvoiceNumber.Text = i.iInvoiceNum.ToString();
+                }
+
+                dpInvoiceDate.SelectedDate = i.GetInvoiceDate();
+
+                ToggleInvoiceActive();
                 return;
             }
-
-            this.ActiveInvoice = i;
-            if (i.iInvoiceNum is null)
+            catch (Exception ex)
             {
-                txtInvoiceNumber.Text = "TBD";
+                throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." +
+                                    MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
             }
-            else
-            {
-                txtInvoiceNumber.Text = i.iInvoiceNum.ToString();
-            }
-
-            dpInvoiceDate.SelectedDate = i.GetInvoiceDate();
-
-            ToggleInvoiceActive();
-            return;
         }
 
         /// <summary>
@@ -377,16 +403,24 @@ namespace group_proj.Main
         /// <param name="inv"></param>
         private async void DrawItemsDataGrid(clsInvoice inv)
         {
-            dgInvoiceItems.ItemsSource = null;
-            dgInvoiceItems.ItemsSource = inv.LineItems;
-            double totalcost = 0;
-            foreach (clsLineItem item in inv.LineItems)
+            try
             {
-                totalcost += item.Cost;
-            }
+                dgInvoiceItems.ItemsSource = null;
+                dgInvoiceItems.ItemsSource = inv.LineItems;
+                double totalcost = 0;
+                foreach (clsLineItem item in inv.LineItems)
+                {
+                    totalcost += item.Cost;
+                }
 
-            txtTotalCost.Text = "$" + totalcost.ToString("0.##");
-            await Task.Delay(10);
+                txtTotalCost.Text = "$" + totalcost.ToString("0.##");
+                await Task.Delay(10);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." +
+                                    MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
+            }
         }
 
         /// <summary>
@@ -395,19 +429,49 @@ namespace group_proj.Main
         /// <param name="item"></param>
         private async void BindSelectedItem(clsLineItem item)
         {
-            txtSelectedItemLN.Text = item.LineItemNumber.ToString();
-            txtSelectedItemName.Text = item.ItemDesc;
-            txtSelectedItemCost.Text = item.Cost.ToString("0.##");
-            await Task.Delay(10);
+            try
+            {
+                txtSelectedItemLN.Text = item.LineItemNumber.ToString();
+                txtSelectedItemName.Text = item.ItemDesc;
+                txtSelectedItemCost.Text = item.Cost.ToString("0.##");
+                await Task.Delay(10);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." +
+                                    MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
+            }
         }
 
         /// <summary>
         /// Enables the editing of an invoice's items
         /// </summary>
-        private async void ToggleEditInvoiceItems()
+        private async void ToggleEditInvoiceItemsOn()
         {
-            gbInvoiceItems.IsEnabled = true;
-            await Task.Delay(10);
+            try
+            {
+                gbInvoiceItems.IsEnabled = true;
+                await Task.Delay(10);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." +
+                                    MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
+            }
+        }
+
+        private async void ToggleEditInvoiceItemsOff()
+        {
+            try
+            {
+                gbInvoiceItems.IsEnabled = false;
+                await Task.Delay(10);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." +
+                                    MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
+            }
         }
 
         /// <summary>
