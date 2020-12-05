@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:group_proj.Items"
         mc:Ignorable="d"
-        Title="wndItems" Height="450" Width="800">
+        Title="wndItems" Height="455" Width="810">
     <Grid >
         <Grid.Background>
             <LinearGradientBrush EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
@@ -45,12 +45,12 @@
                 </LinearGradientBrush>
             </Button.Background>
         </Button>
-        <TextBox x:Name="addItem" HorizontalAlignment="Left" Height="24" Margin="84,108,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="139" FontSize="14"/>
-        <TextBox x:Name="addCost" HorizontalAlignment="Left" Height="22" Margin="271,108,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="71" FontSize="14"/>
+        <TextBox x:Name="addItem" MaxLength="50" HorizontalAlignment="Left" Height="24" Margin="84,108,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="139" FontSize="14"/>
+        <TextBox x:Name="addCost" HorizontalAlignment="Left" Height="22" Margin="271,108,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="71" FontSize="14" PreviewTextInput="AddCost_PreviewTextInput"/>
         <Label Content="Cost:" HorizontalAlignment="Left" Margin="228,106,0,0" VerticalAlignment="Top" FontWeight="Bold"/>
         <Label Content="Item Desc:" HorizontalAlignment="Left" Margin="7,106,0,0" VerticalAlignment="Top" FontWeight="Bold"/>
-        <TextBox x:Name="ItemDescUpdate" HorizontalAlignment="Left" Height="22" Margin="84,220,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="139" FontSize="14"/>
-        <TextBox x:Name="CostUpdate" HorizontalAlignment="Left" Height="24" Margin="271,218,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="71" FontSize="14"/>
+        <TextBox x:Name="ItemDescUpdate" MaxLength="50" HorizontalAlignment="Left" Height="22" Margin="84,220,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="139" FontSize="14"/>
+        <TextBox x:Name="CostUpdate" HorizontalAlignment="Left" Height="24" Margin="271,218,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="71" FontSize="14" PreviewTextInput="CostUpdate_PreviewTextInput"/>
         <Label Content="Cost:" HorizontalAlignment="Left" Margin="228,216,0,0" VerticalAlignment="Top" FontWeight="Bold"/>
         <Label Content="Item Desc:" HorizontalAlignment="Left" Margin="7,216,0,0" VerticalAlignment="Top" FontWeight="Bold"/>
         <TextBox x:Name="ItemSelectedCode" HorizontalAlignment="Left" Height="22" Margin="271,332,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="72" FontSize="14" IsReadOnly="True"/>

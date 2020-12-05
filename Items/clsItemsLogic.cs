@@ -12,10 +12,25 @@ namespace group_proj.Items
 {
     class clsItemsLogic
     {
+        /// <summary>
+        /// Creates a data access object.
+        /// </summary>
         clsDataAccess db = new clsDataAccess();
+        /// <summary>
+        /// Creates a itemssql object.
+        /// </summary>
         clsItemsSQL sql = new clsItemsSQL();
+        /// <summary>
+        /// Creates a dataset object
+        /// </summary>
         public DataSet ds;
+        /// <summary>
+        /// Creates and sets a char variable to be used to create an item code
+        /// </summary>
         char char1 = 'A';
+        /// <summary>
+        /// Creates and sets a char variable to be used to create an item code
+        /// </summary>
         char char2 = 'A';
         string sSQL;
         /// <summary>
@@ -106,6 +121,35 @@ namespace group_proj.Items
             else
             {
                 return ds.Tables[0].Rows.Count;
+            }
+        }
+        
+        /// <summary>
+        /// Logic to delete item and display message warning to warn the user their decision is permanent.
+        /// </summary>
+        /// <param name="itemCode"></param>
+        public void deleteSelectedItem(string itemCode)
+        {
+            try
+            {
+                MessageBoxResult result = MessageBox.Show("Deleting this row will permanently delete it from the database. Would you like to continue?", "Alert", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+                if (result == MessageBoxResult.Yes)
+                {
+                    int checkRow = checkInvoice(itemCode);
+                    if (checkRow == 0)
+                    {
+                        deleteItem(itemCode);
+                    }
+                    else
+                    {
+                        MessageBox.Show("Item cannot be deleted. The item is currently on invoice " + checkRow);
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." + MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
             }
         }
 
