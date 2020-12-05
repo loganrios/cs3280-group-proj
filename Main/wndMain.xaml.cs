@@ -64,6 +64,7 @@ namespace group_proj.Main
                 BindInvoice(s.invoiceToEdit);
                 DrawItemsDataGrid(this.ActiveInvoice);
                 ToggleEditInvoiceItemsOff();
+                ToggleInvoiceActive();
             }
             catch (Exception ex)
             {
@@ -104,6 +105,7 @@ namespace group_proj.Main
                 BindInvoice(clsMainLogic.GenerateNewInvoice());
                 DrawItemsDataGrid(this.ActiveInvoice);
                 ToggleEditInvoiceItemsOff();
+                ToggleInvoiceActive();
             }
             catch (Exception ex)
             {
@@ -386,8 +388,6 @@ namespace group_proj.Main
                 }
 
                 dpInvoiceDate.SelectedDate = i.GetInvoiceDate();
-
-                ToggleInvoiceActive();
                 return;
             }
             catch (Exception ex)

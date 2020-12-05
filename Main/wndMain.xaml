@@ -14,8 +14,6 @@
                     <MenuItem x:Name="mnNewInvoice" Header="New Invoice" Click="btnNewInvoice_Click"/>
                     <MenuItem x:Name="mnSearchForInvoice" Header="Search For Invoice" Click="btnSearchForInvoice_Click"/>
                     <MenuItem x:Name="EditAvailableItems" Header="Edit Available Items" Click="btnEditAvailableItems_Click"/>
-                    <Separator />
-                    <MenuItem Header="_Exit" />
                 </MenuItem>
             </Menu>
         </DockPanel>
