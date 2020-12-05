@@ -256,6 +256,7 @@ namespace group_proj.Search
                 dateInvoiceDate.SelectedDate = null;
                 cbInvoiceNumber.SelectedItem = null;
                 cbTotalCharge.SelectedItem = null;
+                dgResults.SelectedItem = null;
             }
             catch (Exception ex)
             {

@@ -28,7 +28,7 @@
                 <Label x:Name="lblTotalCharge" Content="Total Charge:"/>
                 <ComboBox x:Name="cbTotalCharge" Width="102" SelectionChanged="cbTotalCharge_SelectionChanged"/>
             </StackPanel>
-            <Button x:Name="btnEClearFilter" Content="Clear Filter" Height="40" Margin="0,5" Click="btnEClearFilter_Click">
+            <Button x:Name="btnEClearFilter" Content="Clear Selection" Height="40" Margin="0,5" Click="btnEClearFilter_Click">
             </Button>
         </StackPanel>
     </Grid>
