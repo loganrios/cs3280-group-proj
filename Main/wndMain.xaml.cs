@@ -3,6 +3,8 @@ using group_proj.Search;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Windows;
+using System;
+using System.Reflection;
 
 namespace group_proj.Main
 {
@@ -11,15 +13,33 @@ namespace group_proj.Main
     /// </summary>
     public partial class wndMain : Window
     {
+        /// <summary>
+        /// Holds the invoice that is currently being edited.
+        /// </summary>
         private clsInvoice ActiveInvoice;
+
+        /// <summary>
+        /// Holds a list of all available items from the database.
+        /// </summary>
         private List<clsItem> AvailableItems;
 
+        /// <summary>
+        /// Constructs the window and sets default state.
+        /// </summary>
         public wndMain()
         {
-            InitializeComponent();
-            this.ActiveInvoice = new clsInvoice();
-            this.AvailableItems = new List<clsItem>();
-            ToggleMenuActive();
+            try
+            {
+                InitializeComponent();
+                this.ActiveInvoice = new clsInvoice();
+                this.AvailableItems = new List<clsItem>();
+                ToggleMenuActive();
+            }
+            catch (Exception ex)
+            {
+                HandleError(MethodInfo.GetCurrentMethod().DeclaringType.Name,
+                    MethodInfo.GetCurrentMethod().Name, ex.Message);
+            }
         }
 
         /// <summary>
@@ -30,17 +50,25 @@ namespace group_proj.Main
         /// </summary>
         private void btnSearchForInvoice_Click(object sender, RoutedEventArgs e)
         {
-            clsInvoice inv = this.ActiveInvoice;
-            wndSearch s = new wndSearch(inv);
-            _ = s.ShowDialog();
-            // We'll need to also get the items first, since the Search window doesn't do this.
-            if (s.invoiceToEdit is null)
+            try
             {
-                return;
+                clsInvoice inv = this.ActiveInvoice;
+                wndSearch s = new wndSearch(inv);
+                _ = s.ShowDialog();
+                // We'll need to also get the items first, since the Search window doesn't do this.
+                if (s.invoiceToEdit is null)
+                {
+                    return;
+                }
+                s.invoiceToEdit.LineItems = clsMainLogic.GetLineItemsForInvoice(s.invoiceToEdit.iInvoiceNum);
+                BindInvoice(s.invoiceToEdit);
+                DrawItemsDataGrid(this.ActiveInvoice);
             }
-            s.invoiceToEdit.LineItems = clsMainLogic.GetLineItemsForInvoice(s.invoiceToEdit.iInvoiceNum);
-            BindInvoice(s.invoiceToEdit);
-            DrawItemsDataGrid(this.ActiveInvoice);
+            catch (Exception ex)
+            {
+                HandleError(MethodInfo.GetCurrentMethod().DeclaringType.Name,
+                    MethodInfo.GetCurrentMethod().Name, ex.Message);
+            }
         }
 
         /// <summary>
@@ -48,93 +76,260 @@ namespace group_proj.Main
         /// </summary>
         private void btnEditAvailableItems_Click(object sender, RoutedEventArgs e)
         {
-            wndItems i = new wndItems();
-            _ = i.ShowDialog();
-            this.ActiveInvoice.LineItems = clsMainLogic.GetLineItemsForInvoice(this.ActiveInvoice.iInvoiceNum);
-            BindInvoice(this.ActiveInvoice);
-            DrawItemsDataGrid(this.ActiveInvoice);
+            try
+            {
+                wndItems i = new wndItems();
+                _ = i.ShowDialog();
+                this.ActiveInvoice.LineItems = clsMainLogic.GetLineItemsForInvoice(this.ActiveInvoice.iInvoiceNum);
+                BindInvoice(this.ActiveInvoice);
+                DrawItemsDataGrid(this.ActiveInvoice);
+            }
+            catch (Exception ex)
+            {
+                HandleError(MethodInfo.GetCurrentMethod().DeclaringType.Name,
+                    MethodInfo.GetCurrentMethod().Name, ex.Message);
+            }
         }
 
+        /// <summary>
+        /// Generate a new invoice and bind it to the UI.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void btnNewInvoice_Click(object sender, RoutedEventArgs e)
         {
-            BindInvoice(clsMainLogic.GenerateNewInvoice());
-            DrawItemsDataGrid(this.ActiveInvoice);
+            try
+            {
+                BindInvoice(clsMainLogic.GenerateNewInvoice());
+                DrawItemsDataGrid(this.ActiveInvoice);
+            }
+            catch (Exception ex)
+            {
+                HandleError(MethodInfo.GetCurrentMethod().DeclaringType.Name,
+                    MethodInfo.GetCurrentMethod().Name, ex.Message);
+            }
         }
 
+        /// <summary>
+        /// Save the changes made to an individual invoice (write to database)
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void btnSaveChanges_Click(object sender, RoutedEventArgs e)
         {
-            // TODO: currently (dangerously!) assumes that it's a new invoice
-            clsMainLogic.SaveInvoiceChanges(this.ActiveInvoice);
-            gbInvoiceItems.IsEnabled = false;
+            try
+            {
+                clsMainLogic.SaveInvoiceChanges(this.ActiveInvoice);
+                gbInvoiceItems.IsEnabled = false;
+            }
+            catch (Exception ex)
+            {
+                HandleError(MethodInfo.GetCurrentMethod().DeclaringType.Name,
+                    MethodInfo.GetCurrentMethod().Name, ex.Message);
+            }
         }
 
+        /// <summary>
+        /// Select a new invoice without saving the changes to the current one.
+        /// Disables the Invoice Items group box.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void btnDiscardChanges_Click(object sender, RoutedEventArgs e)
         {
-            gbInvoiceItems.IsEnabled = false;
+            try
+            {
+                gbInvoiceItems.IsEnabled = false;
+            }
+            catch (Exception ex)
+            {
+                HandleError(MethodInfo.GetCurrentMethod().DeclaringType.Name,
+                    MethodInfo.GetCurrentMethod().Name, ex.Message);
+            }
         }
 
+        /// <summary>
+        /// Deletes the invoice from the database and unsets it from the UI.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void btnDeleteInvoice_Click(object sender, RoutedEventArgs e)
         {
-            clsMainLogic.DeleteInvoice(ActiveInvoice);
-            this.ActiveInvoice = clsMainLogic.GenerateNewInvoice();
-            BindInvoice(ActiveInvoice);
-            DrawItemsDataGrid(ActiveInvoice);
-            ToggleEditInvoiceItems();
-            ToggleMenuActive();
+            try
+            {
+                clsMainLogic.DeleteInvoice(ActiveInvoice);
+                this.ActiveInvoice = clsMainLogic.GenerateNewInvoice();
+                BindInvoice(ActiveInvoice);
+                DrawItemsDataGrid(ActiveInvoice);
+                ToggleEditInvoiceItems();
+                ToggleMenuActive();
+            }
+            catch (Exception ex)
+            {
+                HandleError(MethodInfo.GetCurrentMethod().DeclaringType.Name,
+                    MethodInfo.GetCurrentMethod().Name, ex.Message);
+            }
         }
 
+        /// <summary>
+        /// Changes the text in the item description window upon the ItemCode combo box change.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void cbChooseAddItem_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
         {
-            if (this.AvailableItems is null)
+            try
             {
-                return;
+                if (this.AvailableItems is null)
+                {
+                    return;
+                }
+                string choice = (string)cbChooseAddItem.SelectedItem ?? "";
+                clsItem selectedAddItem = clsMainLogic.GetItemFromItemCode(this.AvailableItems, choice);
+                if (!(selectedAddItem is null))
+                {
+                    this.txtAddItemDesc.Text = selectedAddItem.ItemDesc + " $" + selectedAddItem.Cost.ToString("0.##");
+                }
             }
-            string choice = (string)cbChooseAddItem.SelectedItem ?? "";
-            clsItem selectedAddItem = clsMainLogic.GetItemFromItemCode(this.AvailableItems, choice);
-            if (!(selectedAddItem is null))
+            catch (Exception ex)
             {
-                this.txtAddItemDesc.Text = selectedAddItem.ItemDesc + " $" + selectedAddItem.Cost.ToString("0.##");
+                HandleError(MethodInfo.GetCurrentMethod().DeclaringType.Name,
+                    MethodInfo.GetCurrentMethod().Name, ex.Message);
             }
         }
 
+        /// <summary>
+        /// Sets the active invoice's date after a DatePicker change.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void dpInvoiceDate_SelectedDateChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
         {
-            if (!(dpInvoiceDate.SelectedDate is null))
+            try
             {
-                this.ActiveInvoice.SetInvoiceDate((System.DateTime)dpInvoiceDate.SelectedDate);
+                if (!(dpInvoiceDate.SelectedDate is null))
+                {
+                    this.ActiveInvoice.SetInvoiceDate((System.DateTime)dpInvoiceDate.SelectedDate);
+                }
+            }
+            catch (Exception ex)
+            {
+                HandleError(MethodInfo.GetCurrentMethod().DeclaringType.Name,
+                    MethodInfo.GetCurrentMethod().Name, ex.Message);
             }
         }
 
+        /// <summary>
+        /// Adds the currently selected item to the ActiveInvoice's line items.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void btnAddItem_Click(object sender, RoutedEventArgs e)
         {
-            clsItem itemToAdd = clsMainLogic.GetItemFromItemCode(this.AvailableItems, (string)cbChooseAddItem.SelectedItem ?? "");
-            if (itemToAdd is null)
+            try
             {
-                return;
-            }
+                clsItem itemToAdd = clsMainLogic.GetItemFromItemCode(this.AvailableItems, (string)cbChooseAddItem.SelectedItem ?? "");
+                if (itemToAdd is null)
+                {
+                    return;
+                }
 
-            int lineItemNo = clsMainLogic.GetNextLineItemNumber(this.ActiveInvoice.LineItems);
-            this.ActiveInvoice.LineItems.Add(new clsLineItem(lineItemNo, itemToAdd));
-            DrawItemsDataGrid(this.ActiveInvoice);
+                int lineItemNo = clsMainLogic.GetNextLineItemNumber(this.ActiveInvoice.LineItems);
+                this.ActiveInvoice.LineItems.Add(new clsLineItem(lineItemNo, itemToAdd));
+                DrawItemsDataGrid(this.ActiveInvoice);
+            }
+            catch (Exception ex)
+            {
+                HandleError(MethodInfo.GetCurrentMethod().DeclaringType.Name,
+                    MethodInfo.GetCurrentMethod().Name, ex.Message);
+            }
         }
 
+        /// <summary>
+        /// Deletes the selected item from the Active Invoice's line items.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void btnDeleteSelectedItem_Click(object sender, RoutedEventArgs e)
         {
-            if (!int.TryParse(txtSelectedItemLN.Text, out int ln))
+            try
             {
-                return;
-            }
+                if (!int.TryParse(txtSelectedItemLN.Text, out int ln))
+                {
+                    return;
+                }
 
-            this.ActiveInvoice.LineItems = clsMainLogic.RemoveLineItem(this.ActiveInvoice.LineItems, ln);
-            DrawItemsDataGrid(this.ActiveInvoice);
+                this.ActiveInvoice.LineItems = clsMainLogic.RemoveLineItem(this.ActiveInvoice.LineItems, ln);
+                DrawItemsDataGrid(this.ActiveInvoice);
+            }
+            catch (Exception ex)
+            {
+                HandleError(MethodInfo.GetCurrentMethod().DeclaringType.Name,
+                    MethodInfo.GetCurrentMethod().Name, ex.Message);
+            }
         }
 
+        /// <summary>
+        /// If a row is selected on the data grid, make it the Selected Item and bind to UI.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void dgInvoiceItems_MouseUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            try
+            {
+                if (dgInvoiceItems.SelectedItems.Count > 0)
+                {
+                    BindSelectedItem((clsLineItem)dgInvoiceItems.SelectedItems[0]);
+                }
+            }
+            catch (Exception ex)
+            {
+                HandleError(MethodInfo.GetCurrentMethod().DeclaringType.Name,
+                    MethodInfo.GetCurrentMethod().Name, ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// Enables the editing of an Invoice's items. If the invoice is new, 
+        /// write it out to the database and get an ID.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void btnEditInvoice_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                if (this.ActiveInvoice.iInvoiceNum is null)
+                {
+                    int id = clsMainLogic.SaveNewInvoice(this.ActiveInvoice);
+                    this.ActiveInvoice.iInvoiceNum = id;
+                    BindInvoice(this.ActiveInvoice);
+                    DrawItemsDataGrid(this.ActiveInvoice);
+                }
+
+                ToggleEditInvoiceItems();
+            }
+            catch (Exception ex)
+            {
+                HandleError(MethodInfo.GetCurrentMethod().DeclaringType.Name,
+                    MethodInfo.GetCurrentMethod().Name, ex.Message);
+            }
+        }
+
+        // Internal Methods Begin
+
+        /// <summary>
+        /// Toggles the Invoice editor off.
+        /// </summary>
         private void ToggleMenuActive()
         {
-            gbMenu.IsEnabled = true;
             gbActiveInvoice.IsEnabled = false;
         }
 
+        /// <summary>
+        /// Toggle the invoice editor on (also populates the combo box to prepare for editing)
+        /// </summary>
         private void ToggleInvoiceActive()
         {
             gbMenu.IsEnabled = false;
@@ -149,6 +344,10 @@ namespace group_proj.Main
             gbActiveInvoice.IsEnabled = true;
         }
 
+        /// <summary>
+        /// Binds a given invoice to the UI (may or may not be ActiveInvoice)
+        /// </summary>
+        /// <param name="i"></param>
         private void BindInvoice(clsInvoice i)
         {
             if (i is null)
@@ -172,6 +371,10 @@ namespace group_proj.Main
             return;
         }
 
+        /// <summary>
+        /// Draw the line items into the data grid. May or may not be ActiveInvoice's LineItems.
+        /// </summary>
+        /// <param name="inv"></param>
         private async void DrawItemsDataGrid(clsInvoice inv)
         {
             dgInvoiceItems.ItemsSource = null;
@@ -186,6 +389,10 @@ namespace group_proj.Main
             await Task.Delay(10);
         }
 
+        /// <summary>
+        /// Bind an item as "selected" into the UI to enable deletion.
+        /// </summary>
+        /// <param name="item"></param>
         private async void BindSelectedItem(clsLineItem item)
         {
             txtSelectedItemLN.Text = item.LineItemNumber.ToString();
@@ -194,31 +401,32 @@ namespace group_proj.Main
             await Task.Delay(10);
         }
 
-        private void dgInvoiceItems_MouseUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
-        {
-            if (dgInvoiceItems.SelectedItems.Count > 0)
-            {
-                BindSelectedItem((clsLineItem)dgInvoiceItems.SelectedItems[0]);
-            }
-        }
-
-        private void btnEditInvoice_Click(object sender, RoutedEventArgs e)
-        {
-            if (this.ActiveInvoice.iInvoiceNum is null)
-            {
-                int id = clsMainLogic.SaveNewInvoice(this.ActiveInvoice);
-                this.ActiveInvoice.iInvoiceNum = id;
-                BindInvoice(this.ActiveInvoice);
-                DrawItemsDataGrid(this.ActiveInvoice);
-            }
-
-            ToggleEditInvoiceItems();
-        }
-
+        /// <summary>
+        /// Enables the editing of an invoice's items
+        /// </summary>
         private async void ToggleEditInvoiceItems()
         {
             gbInvoiceItems.IsEnabled = true;
             await Task.Delay(10);
+        }
+
+        /// <summary>
+        /// Handle the error.
+        /// </summary>
+        /// <param name="sClass">The class in which the error occurred in.</param>
+        /// <param name="sMethod">The method in which the error occurred in.</param>
+        private void HandleError(string sClass, string sMethod, string sMessage)
+        {
+            try
+            {
+                //Would write to a file or database here.
+                MessageBox.Show(sClass + "." + sMethod + " -> " + sMessage);
+            }
+            catch (Exception ex)
+            {
+                System.IO.File.AppendAllText("C:\\Error.txt", Environment.NewLine +
+                                             "HandleError Exception: " + ex.Message);
+            }
         }
     }
 }
