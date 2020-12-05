@@ -7,23 +7,23 @@ namespace group_proj.Main
         public static string DeleteLineItemsFromInvoiceID(int InvoiceID)
         {
             return
-                "DELETE FROM LineItems" +
+                "DELETE FROM LineItems " +
                 "WHERE InvoiceNum = " + InvoiceID.ToString() + "; ";
         }
 
         public static string DeleteInvoice(int InvoiceID)
         {
             return
-                "DELETE FROM Invoices" +
+                "DELETE FROM Invoices " +
                 "WHERE InvoiceNum = " + InvoiceID.ToString() + "; ";
         }
 
-        public static string InsertLineItemForInvoice(int InvoiceID, int Quantity, string ItemCode)
+        public static string InsertLineItemForInvoice(int InvoiceID, int LineItemNumber, string ItemCode)
         {
             return
                 "INSERT INTO LineItems (InvoiceNum, LineItemNum, ItemCode) " +
                 "Values(" + InvoiceID.ToString() + ", " +
-                Quantity.ToString() + ", " +
+                LineItemNumber.ToString() + ", " +
                 "'" + ItemCode + "');";
         }
 
@@ -31,7 +31,7 @@ namespace group_proj.Main
         {
             return
                 "INSERT INTO Invoices(InvoiceDate, TotalCost) " +
-                "Values('#" + StringifyDate(InvoiceDate) + "#', " + TotalCost.ToString() + ");";
+                "Values(#" + StringifyDate(InvoiceDate) + "#, " + TotalCost.ToString() + ");";
         }
 
         public static string SelectInvoiceData(int InvoiceID)
@@ -48,11 +48,6 @@ namespace group_proj.Main
                 "select ItemCode, ItemDesc, Cost from ItemDesc;";
         }
 
-        public static string GetAllItemCodes()
-        {
-            return "select ItemCode from ItemDesc;";
-        }
-
         public static string GetLineItemsInInvoice(int InvoiceID)
         {
             return
@@ -60,6 +55,18 @@ namespace group_proj.Main
                 "FROM LineItems INNER JOIN ItemDesc " +
                 "ON LineItems.ItemCode = ItemDesc.ItemCode " +
                 "WHERE LineItems.InvoiceNum = " + InvoiceID.ToString() + ";";
+        }
+
+        public static string GetNewestInsertedInvoiceID()
+        {
+            return "SELECT TOP 1 InvoiceNum FROM Invoices ORDER BY InvoiceNum DESC;";
+        }
+
+        public static string UpdateInvoice(int id, DateTime date, int cost)
+        {
+            return "UPDATE Invoices SET InvoiceDate = #"+ StringifyDate(date) + "#," +
+                " TotalCost = " + cost.ToString() + 
+                " WHERE InvoiceNum = " + id.ToString() + ";";
         }
 
         public static string StringifyDate(DateTime dt)

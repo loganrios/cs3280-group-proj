@@ -86,10 +86,17 @@ namespace group_proj.Main
             return items;
         }
 
-        public static clsInvoice GetInvoiceFromId(int id)
+        internal static void DeleteInvoice(clsInvoice activeInvoice)
         {
-            // todo
-            return new clsInvoice();
+            if (activeInvoice.iInvoiceNum is null)
+            {
+                // this is a new invoice, do nothing
+                return;
+            }
+            int id = (int)activeInvoice.iInvoiceNum;
+            db.ExecuteNonQuery(clsMainSQL.DeleteLineItemsFromInvoiceID(id));
+            db.ExecuteNonQuery(clsMainSQL.DeleteInvoice(id));
+            return;
         }
 
         public static int GetNextLineItemNumber(List<clsLineItem> lineitems)
@@ -103,6 +110,57 @@ namespace group_proj.Main
                 }
             }
             return m + 1;
+        }
+
+        public static void SaveInvoiceChanges(clsInvoice inv)
+        {
+            // todo throw exception if id is null
+            if (inv.iInvoiceNum is null)
+            {
+                throw new Exception();
+            }
+
+            int id = (int)inv.iInvoiceNum;
+            int totalcost = 0;
+            foreach(clsLineItem li in inv.LineItems)
+            {
+                totalcost += (int)li.Cost;
+            }
+
+            int rows_aff = db.ExecuteNonQuery(clsMainSQL.UpdateInvoice(id, inv.GetInvoiceDate(), totalcost));
+
+            if (rows_aff != 1)
+            {
+                throw new Exception();
+            }
+
+            db.ExecuteNonQuery(clsMainSQL.DeleteLineItemsFromInvoiceID(id));
+
+            foreach (clsLineItem li in inv.LineItems)
+            {
+                db.ExecuteNonQuery(clsMainSQL.InsertLineItemForInvoice(id, li.LineItemNumber, li.ItemCode));
+            }
+
+            return;
+        }
+
+        public static int SaveNewInvoice(clsInvoice inv)
+        {
+            // INSERT INTO -or- UPDATE
+            int totalcost = 0;
+            foreach (clsLineItem li in inv.LineItems)
+            {
+                totalcost += (int)li.Cost;
+            }
+
+            int rowcount = 0;
+            int insertCount = db.ExecuteNonQuery(
+                clsMainSQL.InsertNewInvoice(inv.GetInvoiceDate(), totalcost));
+
+            // Get the number we just inserted
+            DataSet ds = db.ExecuteSQLStatement(clsMainSQL.GetNewestInsertedInvoiceID(), ref rowcount);
+            int newid = (int)ds.Tables[0].Rows[0].ItemArray[0];
+            return newid;
         }
     }
 }

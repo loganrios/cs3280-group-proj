@@ -34,6 +34,10 @@ namespace group_proj.Main
             wndSearch s = new wndSearch(inv);
             _ = s.ShowDialog();
             // We'll need to also get the items first, since the Search window doesn't do this.
+            if (s.invoiceToEdit is null)
+            {
+                return;
+            }
             s.invoiceToEdit.LineItems = clsMainLogic.GetLineItemsForInvoice(s.invoiceToEdit.iInvoiceNum);
             BindInvoice(s.invoiceToEdit);
             DrawItemsDataGrid(this.ActiveInvoice);
@@ -46,6 +50,7 @@ namespace group_proj.Main
         {
             wndItems i = new wndItems();
             _ = i.ShowDialog();
+            this.ActiveInvoice.LineItems = clsMainLogic.GetLineItemsForInvoice(this.ActiveInvoice.iInvoiceNum);
             BindInvoice(this.ActiveInvoice);
             DrawItemsDataGrid(this.ActiveInvoice);
         }
@@ -58,16 +63,23 @@ namespace group_proj.Main
 
         private void btnSaveChanges_Click(object sender, RoutedEventArgs e)
         {
-            ToggleMenuActive();
+            // TODO: currently (dangerously!) assumes that it's a new invoice
+            clsMainLogic.SaveInvoiceChanges(this.ActiveInvoice);
+            gbInvoiceItems.IsEnabled = false;
         }
 
         private void btnDiscardChanges_Click(object sender, RoutedEventArgs e)
         {
-            ToggleMenuActive();
+            gbInvoiceItems.IsEnabled = false;
         }
 
         private void btnDeleteInvoice_Click(object sender, RoutedEventArgs e)
         {
+            clsMainLogic.DeleteInvoice(ActiveInvoice);
+            this.ActiveInvoice = clsMainLogic.GenerateNewInvoice();
+            BindInvoice(ActiveInvoice);
+            DrawItemsDataGrid(ActiveInvoice);
+            ToggleEditInvoiceItems();
             ToggleMenuActive();
         }
 
@@ -87,7 +99,10 @@ namespace group_proj.Main
 
         private void dpInvoiceDate_SelectedDateChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
         {
-
+            if (!(dpInvoiceDate.SelectedDate is null))
+            {
+                this.ActiveInvoice.SetInvoiceDate((System.DateTime)dpInvoiceDate.SelectedDate);
+            }
         }
 
         private void btnAddItem_Click(object sender, RoutedEventArgs e)
@@ -185,6 +200,25 @@ namespace group_proj.Main
             {
                 BindSelectedItem((clsLineItem)dgInvoiceItems.SelectedItems[0]);
             }
+        }
+
+        private void btnEditInvoice_Click(object sender, RoutedEventArgs e)
+        {
+            if (this.ActiveInvoice.iInvoiceNum is null)
+            {
+                int id = clsMainLogic.SaveNewInvoice(this.ActiveInvoice);
+                this.ActiveInvoice.iInvoiceNum = id;
+                BindInvoice(this.ActiveInvoice);
+                DrawItemsDataGrid(this.ActiveInvoice);
+            }
+
+            ToggleEditInvoiceItems();
+        }
+
+        private async void ToggleEditInvoiceItems()
+        {
+            gbInvoiceItems.IsEnabled = true;
+            await Task.Delay(10);
         }
     }
 }

@@ -6,9 +6,20 @@
         xmlns:local="clr-namespace:group_proj.Main"
         xmlns:group_proj="clr-namespace:group_proj" x:Class="group_proj.Main.wndMain"
         mc:Ignorable="d"
-        Title="wndMain" Height="550.955" Width="676.492">
+        Title="wndMain" Height="488.087" Width="676.492">
     <StackPanel Orientation="Vertical">
-        <GroupBox x:Name="gbMenu" Header="Menu" Padding="5" Margin="5">
+        <DockPanel>
+            <Menu DockPanel.Dock="Top">
+                <MenuItem Header="_Menu">
+                    <MenuItem x:Name="mnNewInvoice" Header="New Invoice" Click="btnNewInvoice_Click"/>
+                    <MenuItem x:Name="mnSearchForInvoice" Header="Search For Invoice" Click="btnSearchForInvoice_Click"/>
+                    <MenuItem x:Name="EditAvailableItems" Header="Edit Available Items" Click="btnEditAvailableItems_Click"/>
+                    <Separator />
+                    <MenuItem Header="_Exit" />
+                </MenuItem>
+            </Menu>
+        </DockPanel>
+        <GroupBox x:Name="gbMenu" Header="Menu" Padding="5" Margin="5" Visibility="Collapsed">
             <StackPanel Orientation="Horizontal">
                 <Button x:Name="btnNewInvoice" Content="New Invoice" Margin="5" Padding="5" Click="btnNewInvoice_Click"/>
                 <Button x:Name="btnSearchForInvoice" Content="Search for Invoice" Click="btnSearchForInvoice_Click" Margin="5" Padding="5" />
@@ -19,11 +30,15 @@
             <StackPanel Orientation="Vertical">
                 <StackPanel Orientation="Horizontal">
                     <Label Content="Invoice Number: " Padding="5" Margin="5"/>
-                    <TextBox x:Name="txtInvoiceNumber" Width="120" Margin="5"/>
-                    <Label Content="Invoice Date: " Padding="5" Margin="5"/>
-                    <DatePicker x:Name="dpInvoiceDate" Width="120" Margin="5" SelectedDateChanged="dpInvoiceDate_SelectedDateChanged"/>
+                    <TextBox x:Name="txtInvoiceNumber" Width="120" Margin="5" IsReadOnly="True"/>
+                    <StackPanel Orientation="Horizontal">
+                        <Label Content="Invoice Date: " Padding="5" Margin="5"/>
+                        <DatePicker x:Name="dpInvoiceDate" Width="120" Margin="5" SelectedDateChanged="dpInvoiceDate_SelectedDateChanged"/>
+                    </StackPanel>
+                    <Button x:Name="btnEditInvoice" Content="Edit" Padding="5" Margin="5" Click="btnEditInvoice_Click" />
+                    <Button x:Name="btnDeleteInvoice" Content="Delete Invoice" Padding="5" Margin="5" Click="btnDeleteInvoice_Click" />
                 </StackPanel>
-                <GroupBox Header="Invoice Items" Margin="5" Padding="5">
+                <GroupBox x:Name="gbInvoiceItems" Header="Invoice Items" Margin="5" Padding="5" IsEnabled="False">
                     <StackPanel Orientation="Vertical">
                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
                             <Label Content="Add Item: " Margin="5" Padding="5"/>
@@ -49,13 +64,12 @@
                             <Label Content="Total Cost: " Padding="5" Margin="5"/>
                             <TextBox x:Name="txtTotalCost" Width="75" Margin="5" IsReadOnly="True"/>
                         </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <Button x:Name="btnSaveChanges" Content="Save Invoice Changes" Margin="5" Padding="5" Click="btnSaveChanges_Click"/>
+                            <Button x:Name="btnDiscardChanges" Content="Discard Invoice Changes" Margin="5" Padding="5" Click="btnDiscardChanges_Click" />
+                        </StackPanel>
                     </StackPanel>
                 </GroupBox>
-                <StackPanel Orientation="Horizontal">
-                    <Button x:Name="btnSaveChanges" Content="Save Invoice Changes" Margin="5" Padding="5" Click="btnSaveChanges_Click"/>
-                    <Button x:Name="btnDiscardChanges" Content="Discard Invoice Changes" Margin="5" Padding="5" Click="btnDiscardChanges_Click" />
-                    <Button x:Name="btnDeleteInvoice" Content="Delete Invoice" Margin="5" Padding="5" Click="btnDeleteInvoice_Click"/>
-                </StackPanel>
             </StackPanel>
         </GroupBox>
     </StackPanel>
