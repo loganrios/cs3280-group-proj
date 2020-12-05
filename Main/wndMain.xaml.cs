@@ -1,8 +1,8 @@
-﻿using System.Windows;
+﻿using group_proj.Items;
 using group_proj.Search;
-using group_proj.Items;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace group_proj.Main
 {
@@ -33,7 +33,10 @@ namespace group_proj.Main
             clsInvoice inv = this.ActiveInvoice;
             wndSearch s = new wndSearch(inv);
             _ = s.ShowDialog();
+            // We'll need to also get the items first, since the Search window doesn't do this.
+            s.invoiceToEdit.LineItems = clsMainLogic.GetLineItemsForInvoice(s.invoiceToEdit.iInvoiceNum);
             BindInvoice(s.invoiceToEdit);
+            DrawItemsDataGrid(this.ActiveInvoice);
         }
 
         /// <summary>
@@ -43,11 +46,14 @@ namespace group_proj.Main
         {
             wndItems i = new wndItems();
             _ = i.ShowDialog();
+            BindInvoice(this.ActiveInvoice);
+            DrawItemsDataGrid(this.ActiveInvoice);
         }
 
         private void btnNewInvoice_Click(object sender, RoutedEventArgs e)
         {
             BindInvoice(clsMainLogic.GenerateNewInvoice());
+            DrawItemsDataGrid(this.ActiveInvoice);
         }
 
         private void btnSaveChanges_Click(object sender, RoutedEventArgs e)
@@ -99,7 +105,7 @@ namespace group_proj.Main
 
         private void btnDeleteSelectedItem_Click(object sender, RoutedEventArgs e)
         {
-            if (!int.TryParse(txtSelectedItemID.Text, out int ln))
+            if (!int.TryParse(txtSelectedItemLN.Text, out int ln))
             {
                 return;
             }
@@ -130,18 +136,22 @@ namespace group_proj.Main
 
         private void BindInvoice(clsInvoice i)
         {
-            this.ActiveInvoice = i;
+            if (i is null)
+            {
+                return;
+            }
 
+            this.ActiveInvoice = i;
             if (i.iInvoiceNum is null)
             {
                 txtInvoiceNumber.Text = "TBD";
-            } 
+            }
             else
             {
                 txtInvoiceNumber.Text = i.iInvoiceNum.ToString();
             }
 
-            dpInvoiceDate.SelectedDate = i.InvoiceDate;
+            dpInvoiceDate.SelectedDate = i.GetInvoiceDate();
 
             ToggleInvoiceActive();
             return;
@@ -151,12 +161,19 @@ namespace group_proj.Main
         {
             dgInvoiceItems.ItemsSource = null;
             dgInvoiceItems.ItemsSource = inv.LineItems;
+            double totalcost = 0;
+            foreach (clsLineItem item in inv.LineItems)
+            {
+                totalcost += item.Cost;
+            }
+
+            txtTotalCost.Text = "$" + totalcost.ToString("0.##");
             await Task.Delay(10);
         }
 
         private async void BindSelectedItem(clsLineItem item)
         {
-            txtSelectedItemID.Text = item.LineItemNumber.ToString();
+            txtSelectedItemLN.Text = item.LineItemNumber.ToString();
             txtSelectedItemName.Text = item.ItemDesc;
             txtSelectedItemCost.Text = item.Cost.ToString("0.##");
             await Task.Delay(10);
@@ -170,4 +187,4 @@ namespace group_proj.Main
             }
         }
     }
-} 
+}

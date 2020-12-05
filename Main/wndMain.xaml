@@ -34,8 +34,8 @@
                             <Button x:Name="btnAddItem" Content="Add" Margin="5" Padding="5" Click="btnAddItem_Click" />
                         </StackPanel>
                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
-                            <Label Content="ID: " Padding="5" Margin="5" />
-                            <TextBox x:Name="txtSelectedItemID" Width="50" Margin="5" Padding="5" IsReadOnly="True" />
+                            <Label Content="LN: " Padding="5" Margin="5" />
+                            <TextBox x:Name="txtSelectedItemLN" Width="50" Margin="5" Padding="5" IsReadOnly="True" />
                             <Label Content="Desc: " Padding="5" Margin="5" />
                             <TextBox x:Name="txtSelectedItemName" Width="150" Margin="5" Padding="5" IsReadOnly="True" />
                             <Label Content="Cost: " Padding="5" Margin="5" />
